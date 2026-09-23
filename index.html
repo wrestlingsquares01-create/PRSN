@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PRSN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+
+    <div class="background">
+
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <div class="grid"></div>
+
+    </div>
+
+
+    <!-- MUSIC -->
+
+    <audio id="bgMusic" loop>
+        <source src="music/song.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <audio id="chatMusic" loop>
+        <source src="music/song2.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <!-- ========================= -->
+    <!-- NAME SCREEN -->
+    <!-- ========================= -->
+
+    <section id="nameScreen" class="screen active">
+
+        <div class="glass-card login-card">
+
+            <div class="logo">
+                PRSN
+            </div>
+
+            <div class="tagline">
+                PRIVATE • REAL • US
+            </div>
+
+            <div class="divider"></div>
+
+            <h1>Welcome.</h1>
+
+            <p class="muted">
+                Enter your name to enter PRSN.
+            </p>
+
+            <input
+                id="nameInput"
+                type="text"
+                placeholder="Your name"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+            <button id="enterBtn" class="primary-btn">
+                ENTER PRSN
+            </button>
+
+            <p id="nameError" class="error"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- DASHBOARD -->
+    <!-- ========================= -->
+
+    <section id="dashboard" class="screen">
+
+        <header class="topbar">
+
+            <div class="brand">
+                PRSN
+            </div>
+
+            <div class="top-right">
+
+                <span id="currentUser">
+                    —
+                </span>
+
+                <button
+                    id="musicBtn"
+                    class="icon-btn"
+                    title="Music"
+                >
+                    ♪
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main class="dashboard-content">
+
+            <div class="welcome-section">
+
+                <p class="small-label">
+                    PRIVATE COMMUNITY
+                </p>
+
+                <h1>
+                    Welcome,
+                    <span id="welcomeUser">—</span>
+                </h1>
+
+                <p>
+                    Four people. One space.
+                </p>
+
+            </div>
+
+
+            <!-- ONLY CHAT -->
+
+            <button
+                id="chatBtn"
+                class="feature-card chat-main-card"
+            >
+
+                <div class="feature-icon">
+                    💬
+                </div>
+
+                <div class="feature-title">
+                    Community Chat
+                </div>
+
+                <div class="feature-description">
+                    Enter the private PRSN chat and talk in realtime.
+                </div>
+
+                <div class="feature-arrow">
+                    →
+                </div>
+
+            </button>
+
+        </main>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- CHAT CODE MODAL -->
+    <!-- ========================= -->
+
+    <div
+        id="chatModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-box">
+
+            <button
+                id="closeChat"
+                class="close-btn"
+            >
+                ×
+            </button>
+
+            <div class="modal-icon">
+                🔐
+            </div>
+
+            <h2>
+                Community Chat
+            </h2>
+
+            <p>
+                Enter the PRSN codeword.
+            </p>
+
+            <input
+                id="chatCode"
+                type="password"
+                placeholder="Codeword"
+                autocomplete="off"
+            >
+
+            <button
+                id="unlockChat"
+                class="primary-btn"
+            >
+                CONTINUE
+            </button>
+
+            <p
+                id="chatError"
+                class="error"
+            ></p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- CHAT NAME MODAL -->
+    <!-- ========================= -->
+
+    <div
+        id="chatNameModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-icon">
+                👋
+            </div>
+
+            <h2>
+                Naam bata de bhai
+            </h2>
+
+            <p>
+                Chat mein kis naam se dikhega?
+            </p>
+
+            <input
+                id="chatNameInput"
+                type="text"
+                placeholder="Apna naam"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+            <button
+                id="enterCommunity"
+                class="primary-btn"
+            >
+                LET'S GO
+            </button>
+
+            <p
+                id="chatNameError"
+                class="error"
+            ></p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- CHAT SCREEN -->
+    <!-- ========================= -->
+
+    <section
+        id="chatScreen"
+        class="full-panel hidden"
+    >
+
+        <div class="panel-header">
+
+            <button
+                id="backFromChat"
+                class="back-btn"
+            >
+                ←
+            </button>
+
+            <div>
+
+                <div class="panel-title">
+                    COMMUNITY CHAT
+                </div>
+
+                <div class="panel-subtitle">
+                    PRSN • REALTIME
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MESSAGES -->
+
+        <div
+            id="messages"
+            class="messages"
+        ></div>
+
+
+        <!-- CHAT INPUT -->
+
+        <div class="chat-input-area">
+
+            <label
+                for="photoInput"
+                class="photo-btn"
+                title="Send photo"
+            >
+                📷
+            </label>
+
+            <input
+                id="photoInput"
+                type="file"
+                accept="image/*"
+                hidden
+            >
+
+            <input
+                type="text"
+                id="messageInput"
+                placeholder="Type a message..."
+                maxlength="500"
+                autocomplete="off"
+            >
+
+            <button id="sendMessage">
+                SEND
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
