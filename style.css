@@ -1,14 +1,20 @@
+/* ========================================= */
+/* RESET */
+/* ========================================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
 html,
 body {
     width: 100%;
     height: 100%;
 }
+
 
 body {
     font-family: "Inter", sans-serif;
@@ -18,14 +24,16 @@ body {
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* BACKGROUND */
-/* ========================= */
+/* ========================================= */
 
 .background {
     position: fixed;
     inset: 0;
+
     overflow: hidden;
+
     z-index: -1;
 
     background:
@@ -36,6 +44,7 @@ body {
             #030303 100%
         );
 }
+
 
 .grid {
     position: absolute;
@@ -62,6 +71,7 @@ body {
         translateY(20%);
 }
 
+
 .orb {
     position: absolute;
 
@@ -71,6 +81,7 @@ body {
 
     opacity: 0.22;
 }
+
 
 .orb-1 {
     width: 350px;
@@ -82,6 +93,7 @@ body {
     left: -100px;
 }
 
+
 .orb-2 {
     width: 400px;
     height: 400px;
@@ -91,6 +103,7 @@ body {
     right: -150px;
     top: 20%;
 }
+
 
 .orb-3 {
     width: 300px;
@@ -103,9 +116,9 @@ body {
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* SCREEN */
-/* ========================= */
+/* ========================================= */
 
 .screen {
     position: fixed;
@@ -116,14 +129,15 @@ body {
     overflow-y: auto;
 }
 
+
 .screen.active {
     display: block;
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* LOGIN */
-/* ========================= */
+/* ========================================= */
 
 .login-card {
     position: absolute;
@@ -138,6 +152,7 @@ body {
 
     text-align: center;
 }
+
 
 .glass-card {
     padding: 45px 35px;
@@ -157,6 +172,7 @@ body {
         blur(25px);
 }
 
+
 .logo {
     font-size: 64px;
 
@@ -175,6 +191,7 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+
 .tagline {
     margin-top: 8px;
 
@@ -184,6 +201,7 @@ body {
 
     opacity: 0.45;
 }
+
 
 .divider {
     width: 50px;
@@ -195,11 +213,13 @@ body {
     margin: 30px auto;
 }
 
+
 .login-card h1 {
     font-size: 30px;
 
     margin-bottom: 8px;
 }
+
 
 .muted {
     color:
@@ -211,9 +231,9 @@ body {
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* INPUT */
-/* ========================= */
+/* ========================================= */
 
 input {
     width: 100%;
@@ -237,6 +257,7 @@ input {
     transition: 0.2s;
 }
 
+
 input:focus {
     border-color:
         rgba(255,255,255,0.35);
@@ -245,15 +266,16 @@ input:focus {
         rgba(255,255,255,0.08);
 }
 
+
 input::placeholder {
     color:
         rgba(255,255,255,0.35);
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* BUTTON */
-/* ========================= */
+/* ========================================= */
 
 .primary-btn {
     width: 100%;
@@ -279,10 +301,12 @@ input::placeholder {
         opacity 0.2s;
 }
 
+
 .primary-btn:hover {
     transform:
         translateY(-2px);
 }
+
 
 .primary-btn:active {
     transform:
@@ -290,9 +314,9 @@ input::placeholder {
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* ERROR */
-/* ========================= */
+/* ========================================= */
 
 .error {
     color: #ff6b6b;
@@ -305,9 +329,9 @@ input::placeholder {
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* TOPBAR */
-/* ========================= */
+/* ========================================= */
 
 .topbar {
     height: 75px;
@@ -325,6 +349,7 @@ input::placeholder {
         1px solid rgba(255,255,255,0.07);
 }
 
+
 .brand {
     font-size: 25px;
 
@@ -332,6 +357,7 @@ input::placeholder {
 
     letter-spacing: -2px;
 }
+
 
 .top-right {
     display: flex;
@@ -341,6 +367,7 @@ input::placeholder {
     gap: 18px;
 }
 
+
 #currentUser {
     font-size: 12px;
 
@@ -348,6 +375,7 @@ input::placeholder {
 
     opacity: 0.6;
 }
+
 
 .icon-btn {
     border: none;
@@ -363,14 +391,15 @@ input::placeholder {
     opacity: 0.7;
 }
 
+
 .icon-btn:hover {
     opacity: 1;
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* DASHBOARD */
-/* ========================= */
+/* ========================================= */
 
 .dashboard-content {
     width:
@@ -382,9 +411,11 @@ input::placeholder {
         90px 0 60px;
 }
 
+
 .welcome-section {
     margin-bottom: 45px;
 }
+
 
 .small-label {
     font-size: 10px;
@@ -396,6 +427,7 @@ input::placeholder {
     margin-bottom: 12px;
 }
 
+
 .welcome-section h1 {
     font-size:
         clamp(38px, 6vw, 70px);
@@ -403,10 +435,12 @@ input::placeholder {
     letter-spacing: -4px;
 }
 
+
 .welcome-section h1 span {
     color:
         rgba(255,255,255,0.4);
 }
+
 
 .welcome-section > p:last-child {
     margin-top: 10px;
@@ -416,9 +450,9 @@ input::placeholder {
 }
 
 
-/* ========================= */
-/* CHAT CARD */
-/* ========================= */
+/* ========================================= */
+/* FEATURE CARDS */
+/* ========================================= */
 
 .feature-card {
     position: relative;
@@ -428,6 +462,8 @@ input::placeholder {
     min-height: 300px;
 
     padding: 40px;
+
+    margin-bottom: 20px;
 
     text-align: left;
 
@@ -451,6 +487,7 @@ input::placeholder {
         border-color 0.3s;
 }
 
+
 .feature-card:hover {
     transform:
         translateY(-8px);
@@ -462,17 +499,20 @@ input::placeholder {
         rgba(255,255,255,0.2);
 }
 
+
 .feature-icon {
     font-size: 40px;
 
     margin-bottom: 55px;
 }
 
+
 .feature-title {
     font-size: 27px;
 
     font-weight: 800;
 }
+
 
 .feature-description {
     margin-top: 10px;
@@ -482,6 +522,7 @@ input::placeholder {
     color:
         rgba(255,255,255,0.42);
 }
+
 
 .feature-arrow {
     position: absolute;
@@ -495,9 +536,29 @@ input::placeholder {
 }
 
 
-/* ========================= */
+/* ========================================= */
+/* AMAZING WALL CARD */
+/* ========================================= */
+
+.gallery-main-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.06),
+            rgba(255,255,255,0.025)
+        );
+}
+
+
+.gallery-main-card:hover {
+    border-color:
+        rgba(255,255,255,0.25);
+}
+
+
+/* ========================================= */
 /* MODAL */
-/* ========================= */
+/* ========================================= */
 
 .modal {
     position: fixed;
@@ -520,9 +581,11 @@ input::placeholder {
     z-index: 50;
 }
 
+
 .modal.hidden {
     display: none;
 }
+
 
 .modal-box {
     position: relative;
@@ -547,6 +610,7 @@ input::placeholder {
         0 30px 100px rgba(0,0,0,0.7);
 }
 
+
 .close-btn {
     position: absolute;
 
@@ -566,15 +630,18 @@ input::placeholder {
     opacity: 0.5;
 }
 
+
 .modal-icon {
     font-size: 35px;
 
     margin-bottom: 15px;
 }
 
+
 .modal-box h2 {
     margin-bottom: 8px;
 }
+
 
 .modal-box > p {
     font-size: 13px;
@@ -586,9 +653,9 @@ input::placeholder {
 }
 
 
-/* ========================= */
-/* FULL CHAT PANEL */
-/* ========================= */
+/* ========================================= */
+/* FULL PANEL */
+/* ========================================= */
 
 .full-panel {
     position: fixed;
@@ -605,9 +672,15 @@ input::placeholder {
         rgba(5,5,5,0.97);
 }
 
+
 .full-panel.hidden {
     display: none;
 }
+
+
+/* ========================================= */
+/* PANEL HEADER */
+/* ========================================= */
 
 .panel-header {
     min-height: 75px;
@@ -623,7 +696,10 @@ input::placeholder {
 
     border-bottom:
         1px solid rgba(255,255,255,0.08);
+
+    flex-shrink: 0;
 }
+
 
 .back-btn {
     border: none;
@@ -639,9 +715,11 @@ input::placeholder {
     opacity: 0.7;
 }
 
+
 .back-btn:hover {
     opacity: 1;
 }
+
 
 .panel-title {
     font-size: 15px;
@@ -650,6 +728,7 @@ input::placeholder {
 
     letter-spacing: 2px;
 }
+
 
 .panel-subtitle {
     margin-top: 3px;
@@ -663,9 +742,9 @@ input::placeholder {
 }
 
 
-/* ========================= */
+/* ========================================= */
 /* MESSAGES */
-/* ========================= */
+/* ========================================= */
 
 .messages {
     flex: 1;
@@ -680,6 +759,7 @@ input::placeholder {
 
     gap: 12px;
 }
+
 
 .message {
     max-width: 75%;
@@ -697,12 +777,14 @@ input::placeholder {
     align-self: flex-start;
 }
 
+
 .message.mine {
     align-self: flex-end;
 
     background:
         rgba(255,255,255,0.11);
 }
+
 
 .message-name {
     font-size: 10px;
@@ -714,6 +796,7 @@ input::placeholder {
     margin-bottom: 5px;
 }
 
+
 .message-text {
     font-size: 15px;
 
@@ -721,6 +804,7 @@ input::placeholder {
 
     word-break: break-word;
 }
+
 
 .message-time {
     font-size: 9px;
@@ -731,9 +815,9 @@ input::placeholder {
 }
 
 
-/* ========================= */
-/* IMAGE MESSAGE */
-/* ========================= */
+/* ========================================= */
+/* CHAT IMAGE */
+/* ========================================= */
 
 .message-image {
     display: block;
@@ -749,12 +833,21 @@ input::placeholder {
     object-fit: cover;
 
     cursor: pointer;
+
+    transition:
+        transform 0.2s;
 }
 
 
-/* ========================= */
+.message-image:hover {
+    transform:
+        scale(1.02);
+}
+
+
+/* ========================================= */
 /* CHAT INPUT */
-/* ========================= */
+/* ========================================= */
 
 .chat-input-area {
     display: flex;
@@ -768,11 +861,15 @@ input::placeholder {
 
     border-top:
         1px solid rgba(255,255,255,0.08);
+
+    flex-shrink: 0;
 }
+
 
 .chat-input-area input[type="text"] {
     flex: 1;
 }
+
 
 .chat-input-area button {
     padding:
@@ -791,7 +888,25 @@ input::placeholder {
     font-weight: 800;
 
     cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        opacity 0.2s;
 }
+
+
+.chat-input-area button:hover {
+    transform:
+        translateY(-2px);
+}
+
+
+.chat-input-area button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
 
 .photo-btn {
     width: 50px;
@@ -801,6 +916,8 @@ input::placeholder {
 
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
 
     border-radius: 13px;
 
@@ -817,6 +934,7 @@ input::placeholder {
     transition: 0.2s;
 }
 
+
 .photo-btn:hover {
     background:
         rgba(255,255,255,0.15);
@@ -826,9 +944,354 @@ input::placeholder {
 }
 
 
-/* ========================= */
+/* ========================================= */
+/* AMAZING WALL TOOLBAR */
+/* ========================================= */
+
+.gallery-toolbar {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    padding:
+        18px 5%;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.06);
+
+    flex-shrink: 0;
+}
+
+
+.gallery-upload-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding:
+        13px 18px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,255,255,0.09);
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        background 0.2s,
+        border-color 0.2s;
+}
+
+
+.gallery-upload-btn:hover {
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(255,255,255,0.15);
+
+    border-color:
+        rgba(255,255,255,0.25);
+}
+
+
+.gallery-upload-btn:active {
+    transform:
+        scale(0.98);
+}
+
+
+/* ========================================= */
+/* AMAZING WALL GRID */
+/* ========================================= */
+
+.gallery-grid {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding:
+        25px 5% 50px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 22px;
+
+    align-content: start;
+}
+
+
+/* ========================================= */
+/* GALLERY CARD */
+/* ========================================= */
+
+.gallery-photo-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.35);
+
+    transition:
+        transform 0.3s,
+        border-color 0.3s,
+        box-shadow 0.3s;
+
+    animation:
+        galleryCardIn 0.45s ease both;
+}
+
+
+.gallery-photo-card:hover {
+    transform:
+        translateY(-7px);
+
+    border-color:
+        rgba(255,255,255,0.2);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.5);
+}
+
+
+/* ========================================= */
+/* GALLERY IMAGE WRAPPER */
+/* ========================================= */
+
+.gallery-image-wrap {
+    width: 100%;
+
+    aspect-ratio: 4 / 3;
+
+    overflow: hidden;
+
+    background:
+        rgba(255,255,255,0.03);
+}
+
+
+/* ========================================= */
+/* GALLERY IMAGE */
+/* ========================================= */
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.5s ease;
+}
+
+
+.gallery-photo-card:hover
+.gallery-image {
+    transform:
+        scale(1.055);
+}
+
+
+/* ========================================= */
+/* GALLERY INFO */
+/* ========================================= */
+
+.gallery-info {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding:
+        15px 16px;
+
+    background:
+        rgba(255,255,255,0.025);
+}
+
+
+.gallery-uploader {
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.gallery-date {
+    flex-shrink: 0;
+
+    font-size: 9px;
+
+    letter-spacing: 0.5px;
+
+    color:
+        rgba(255,255,255,0.35);
+}
+
+
+/* ========================================= */
+/* GALLERY LOADING / EMPTY */
+/* ========================================= */
+
+.gallery-loading {
+    grid-column:
+        1 / -1;
+
+    min-height: 250px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    color:
+        rgba(255,255,255,0.4);
+
+    font-size: 14px;
+
+    padding: 40px;
+}
+
+
+.gallery-loading small {
+    color:
+        rgba(255,255,255,0.25);
+
+    font-size: 11px;
+}
+
+
+/* ========================================= */
+/* GALLERY ANIMATION */
+/* ========================================= */
+
+@keyframes galleryCardIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+
+/* ========================================= */
+/* SCROLLBARS */
+/* ========================================= */
+
+.messages::-webkit-scrollbar,
+.gallery-grid::-webkit-scrollbar,
+.screen::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.messages::-webkit-scrollbar-track,
+.gallery-grid::-webkit-scrollbar-track,
+.screen::-webkit-scrollbar-track {
+    background:
+        transparent;
+}
+
+
+.messages::-webkit-scrollbar-thumb,
+.gallery-grid::-webkit-scrollbar-thumb,
+.screen::-webkit-scrollbar-thumb {
+    background:
+        rgba(255,255,255,0.12);
+
+    border-radius: 20px;
+}
+
+
+.messages::-webkit-scrollbar-thumb:hover,
+.gallery-grid::-webkit-scrollbar-thumb:hover,
+.screen::-webkit-scrollbar-thumb:hover {
+    background:
+        rgba(255,255,255,0.2);
+}
+
+
+/* ========================================= */
 /* MOBILE */
-/* ========================= */
+/* ========================================= */
+
+@media (max-width: 900px) {
+
+    .gallery-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 16px;
+    }
+
+}
+
 
 @media (max-width: 650px) {
 
@@ -836,38 +1299,137 @@ input::placeholder {
         padding-top: 55px;
     }
 
+
     .welcome-section h1 {
         letter-spacing: -2px;
     }
+
 
     .login-card {
         padding:
             35px 25px;
     }
 
+
     .logo {
         font-size: 55px;
     }
 
+
     .feature-card {
         min-height: 240px;
+
+        padding: 30px;
     }
+
+
+    .feature-icon {
+        margin-bottom: 40px;
+    }
+
 
     .message {
         max-width: 88%;
     }
 
+
     .message-image {
         max-width: 220px;
     }
+
 
     .chat-input-area {
         padding: 10px;
     }
 
+
     .chat-input-area button {
         padding:
             0 15px;
+    }
+
+
+    .gallery-toolbar {
+        padding:
+            12px 15px;
+    }
+
+
+    .gallery-upload-btn {
+        width: 100%;
+
+        padding:
+            13px 15px;
+    }
+
+
+    .gallery-grid {
+        grid-template-columns:
+            1fr;
+
+        padding:
+            15px 15px 35px;
+
+        gap: 15px;
+    }
+
+
+    .gallery-image-wrap {
+        aspect-ratio:
+            16 / 11;
+    }
+
+
+    .gallery-info {
+        padding:
+            13px 14px;
+    }
+
+
+    .gallery-uploader {
+        font-size: 10px;
+    }
+
+
+    .gallery-date {
+        font-size: 8px;
+    }
+
+}
+
+
+/* ========================================= */
+/* VERY SMALL MOBILE */
+/* ========================================= */
+
+@media (max-width: 400px) {
+
+    .gallery-grid {
+        padding:
+            12px 10px 30px;
+    }
+
+
+    .gallery-photo-card {
+        border-radius: 16px;
+    }
+
+
+    .gallery-image-wrap {
+        aspect-ratio:
+            4 / 3;
+    }
+
+
+    .panel-header {
+        padding:
+            0 15px;
+    }
+
+
+    .messages {
+        padding:
+            15px;
     }
 
 }
