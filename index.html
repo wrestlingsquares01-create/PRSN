@@ -11,92 +11,129 @@
 
     <title>PRSN</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet"
     >
-
-    <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
+    <!-- ========================================= -->
     <!-- BACKGROUND -->
+    <!-- ========================================= -->
 
     <div class="background">
+
+        <div class="grid"></div>
 
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
 
-        <div class="grid"></div>
-
     </div>
 
 
+    <!-- ========================================= -->
     <!-- MUSIC -->
+    <!-- ========================================= -->
 
-    <audio id="bgMusic" loop>
-        <source src="song.mp3" type="audio/mpeg">
+    <audio
+        id="bgMusic"
+        loop
+    >
+        <source
+            src="song.mp3"
+            type="audio/mpeg"
+        >
     </audio>
 
 
-    <audio id="chatMusic" loop>
-        <source src="song2.mp3" type="audio/mpeg">
+    <audio
+        id="chatMusic"
+        loop
+    >
+        <source
+            src="song2.mp3"
+            type="audio/mpeg"
+        >
     </audio>
 
 
-    <!-- ========================= -->
+    <!-- ========================================= -->
     <!-- NAME SCREEN -->
-    <!-- ========================= -->
+    <!-- ========================================= -->
 
-    <section id="nameScreen" class="screen active">
+    <section
+        id="nameScreen"
+        class="screen active"
+    >
 
-        <div class="glass-card login-card">
+        <div class="login-card glass-card">
 
             <div class="logo">
                 PRSN
             </div>
 
             <div class="tagline">
-                PRIVATE • REAL • US
+                PRIVATE • REAL • SIMPLE • NOW
             </div>
+
 
             <div class="divider"></div>
 
-            <h1>Welcome.</h1>
+
+            <h1>
+                Welcome.
+            </h1>
 
             <p class="muted">
                 Enter your name to enter PRSN.
             </p>
 
+
             <input
-                id="nameInput"
                 type="text"
+                id="nameInput"
                 placeholder="Your name"
-                maxlength="20"
                 autocomplete="off"
             >
 
-            <button id="enterBtn" class="primary-btn">
+
+            <button
+                id="enterBtn"
+                class="primary-btn"
+            >
                 ENTER PRSN
             </button>
 
-            <p id="nameError" class="error"></p>
+
+            <div
+                id="nameError"
+                class="error"
+            ></div>
 
         </div>
 
     </section>
 
 
-    <!-- ========================= -->
+    <!-- ========================================= -->
     <!-- DASHBOARD -->
-    <!-- ========================= -->
+    <!-- ========================================= -->
 
-    <section id="dashboard" class="screen">
+    <section
+        id="dashboard"
+        class="screen"
+    >
+
+        <!-- TOP BAR -->
 
         <header class="topbar">
 
@@ -104,18 +141,17 @@
                 PRSN
             </div>
 
+
             <div class="top-right">
 
-                <span id="currentUser">
-                    —
-                </span>
+                <span id="currentUser"></span>
 
                 <button
                     id="musicBtn"
                     class="icon-btn"
                     title="Music"
                 >
-                    ♪
+                    ♫
                 </button>
 
             </div>
@@ -123,27 +159,32 @@
         </header>
 
 
+        <!-- DASHBOARD CONTENT -->
+
         <main class="dashboard-content">
 
             <div class="welcome-section">
 
-                <p class="small-label">
+                <div class="small-label">
                     PRIVATE COMMUNITY
-                </p>
+                </div>
 
                 <h1>
                     Welcome,
-                    <span id="welcomeUser">—</span>
+                    <span id="welcomeUser">
+                    </span>
                 </h1>
 
                 <p>
-                    Four people. One space.
+                    This is your PRSN space.
                 </p>
 
             </div>
 
 
-            <!-- ONLY CHAT -->
+            <!-- ================================= -->
+            <!-- COMMUNITY CHAT -->
+            <!-- ================================= -->
 
             <button
                 id="chatBtn"
@@ -168,14 +209,42 @@
 
             </button>
 
+
+            <!-- ================================= -->
+            <!-- AMAZING WALL -->
+            <!-- ================================= -->
+
+            <button
+                id="galleryBtn"
+                class="feature-card gallery-main-card"
+            >
+
+                <div class="feature-icon">
+                    📸
+                </div>
+
+                <div class="feature-title">
+                    Amazing Wall
+                </div>
+
+                <div class="feature-description">
+                    Got an amazing photo? Put it on the PRSN wall.
+                </div>
+
+                <div class="feature-arrow">
+                    →
+                </div>
+
+            </button>
+
         </main>
 
     </section>
 
 
-    <!-- ========================= -->
+    <!-- ========================================= -->
     <!-- CHAT CODE MODAL -->
-    <!-- ========================= -->
+    <!-- ========================================= -->
 
     <div
         id="chatModal"
@@ -191,45 +260,51 @@
                 ×
             </button>
 
+
             <div class="modal-icon">
                 🔐
             </div>
 
+
             <h2>
-                Community Chat
+                Private Chat
             </h2>
 
+
             <p>
-                Enter the PRSN codeword.
+                Enter the PRSN chat codeword.
             </p>
 
+
             <input
-                id="chatCode"
                 type="password"
+                id="chatCode"
                 placeholder="Codeword"
                 autocomplete="off"
             >
+
 
             <button
                 id="unlockChat"
                 class="primary-btn"
             >
-                CONTINUE
+                UNLOCK CHAT
             </button>
 
-            <p
+
+            <div
                 id="chatError"
                 class="error"
-            ></p>
+            ></div>
 
         </div>
 
     </div>
 
 
-    <!-- ========================= -->
+    <!-- ========================================= -->
     <!-- CHAT NAME MODAL -->
-    <!-- ========================= -->
+    <!-- ========================================= -->
 
     <div
         id="chatNameModal"
@@ -239,50 +314,124 @@
         <div class="modal-box">
 
             <div class="modal-icon">
-                👋
+                👤
             </div>
 
+
             <h2>
-                Naam bata de bhai
+                Chat Name
             </h2>
 
+
             <p>
-                Chat mein kis naam se dikhega?
+                Ye naam chat mein dikhega.
             </p>
 
+
             <input
-                id="chatNameInput"
                 type="text"
-                placeholder="Apna naam"
-                maxlength="20"
+                id="chatNameInput"
+                placeholder="Enter chat name"
                 autocomplete="off"
             >
+
 
             <button
                 id="enterCommunity"
                 class="primary-btn"
             >
-                LET'S GO
+                ENTER CHAT
             </button>
 
-            <p
+
+            <div
                 id="chatNameError"
                 class="error"
-            ></p>
+            ></div>
 
         </div>
 
     </div>
 
 
-    <!-- ========================= -->
-    <!-- CHAT SCREEN -->
-    <!-- ========================= -->
+    <!-- ========================================= -->
+    <!-- AMAZING WALL -->
+    <!-- ========================================= -->
+
+    <section
+        id="galleryScreen"
+        class="full-panel hidden"
+    >
+
+        <!-- HEADER -->
+
+        <div class="panel-header">
+
+            <button
+                id="backFromGallery"
+                class="back-btn"
+            >
+                ←
+            </button>
+
+
+            <div>
+
+                <div class="panel-title">
+                    AMAZING WALL
+                </div>
+
+                <div class="panel-subtitle">
+                    PRSN • OUR BEST MOMENTS
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- UPLOAD BAR -->
+
+        <div class="gallery-toolbar">
+
+            <label
+                for="galleryInput"
+                class="gallery-upload-btn"
+            >
+                📸 UPLOAD PHOTO
+            </label>
+
+
+            <input
+                type="file"
+                id="galleryInput"
+                accept="image/*"
+                hidden
+            >
+
+        </div>
+
+
+        <!-- GALLERY -->
+
+        <div
+            id="galleryGrid"
+            class="gallery-grid"
+        ></div>
+
+    </section>
+
+
+    <!-- ========================================= -->
+    <!-- COMMUNITY CHAT -->
+    <!-- ========================================= -->
 
     <section
         id="chatScreen"
         class="full-panel hidden"
     >
+
+        <!-- CHAT HEADER -->
 
         <div class="panel-header">
 
@@ -292,6 +441,7 @@
             >
                 ←
             </button>
+
 
             <div>
 
@@ -320,6 +470,8 @@
 
         <div class="chat-input-area">
 
+            <!-- PHOTO BUTTON -->
+
             <label
                 for="photoInput"
                 class="photo-btn"
@@ -328,22 +480,30 @@
                 📷
             </label>
 
+
             <input
-                id="photoInput"
                 type="file"
+                id="photoInput"
                 accept="image/*"
                 hidden
             >
+
+
+            <!-- TEXT -->
 
             <input
                 type="text"
                 id="messageInput"
                 placeholder="Type a message..."
-                maxlength="500"
                 autocomplete="off"
             >
 
-            <button id="sendMessage">
+
+            <!-- SEND -->
+
+            <button
+                id="sendMessage"
+            >
                 SEND
             </button>
 
@@ -352,11 +512,22 @@
     </section>
 
 
+    <!-- ========================================= -->
     <!-- SUPABASE -->
+    <!-- ========================================= -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
-    <script src="script.js"></script>
+
+    <!-- ========================================= -->
+    <!-- YOUR JAVASCRIPT -->
+    <!-- ========================================= -->
+
+    <script
+        src="script.js"
+    ></script>
 
 </body>
 
