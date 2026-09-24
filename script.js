@@ -43,10 +43,14 @@ let chatName = null;
 
 let chatChannel = null;
 
+let galleryChannel = null;
+
 
 // =========================================
 // ELEMENTS
 // =========================================
+
+// NAME
 
 const nameScreen =
     document.getElementById("nameScreen");
@@ -70,6 +74,8 @@ const welcomeUser =
     document.getElementById("welcomeUser");
 
 
+// MUSIC
+
 const bgMusic =
     document.getElementById("bgMusic");
 
@@ -80,8 +86,13 @@ const musicBtn =
     document.getElementById("musicBtn");
 
 
+// CHAT BUTTON
+
 const chatBtn =
     document.getElementById("chatBtn");
+
+
+// CHAT CODE MODAL
 
 const chatModal =
     document.getElementById("chatModal");
@@ -99,6 +110,8 @@ const chatError =
     document.getElementById("chatError");
 
 
+// CHAT NAME MODAL
+
 const chatNameModal =
     document.getElementById("chatNameModal");
 
@@ -112,12 +125,13 @@ const chatNameError =
     document.getElementById("chatNameError");
 
 
+// CHAT SCREEN
+
 const chatScreen =
     document.getElementById("chatScreen");
 
 const backFromChat =
     document.getElementById("backFromChat");
-
 
 const messagesBox =
     document.getElementById("messages");
@@ -128,9 +142,28 @@ const messageInput =
 const sendMessageBtn =
     document.getElementById("sendMessage");
 
-
 const photoInput =
     document.getElementById("photoInput");
+
+
+// =========================================
+// AMAZING WALL ELEMENTS
+// =========================================
+
+const galleryBtn =
+    document.getElementById("galleryBtn");
+
+const galleryScreen =
+    document.getElementById("galleryScreen");
+
+const backFromGallery =
+    document.getElementById("backFromGallery");
+
+const galleryInput =
+    document.getElementById("galleryInput");
+
+const galleryGrid =
+    document.getElementById("galleryGrid");
 
 
 // =========================================
@@ -182,14 +215,16 @@ async function enterPRSN() {
     );
 
 
-    // Start first music
+    // Start background music
 
     bgMusic.currentTime = 0;
 
     bgMusic.play().catch(() => {
+
         console.log(
             "Browser blocked autoplay."
         );
+
     });
 
 
@@ -208,7 +243,9 @@ nameInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
+
             enterPRSN();
+
         }
 
     }
@@ -227,13 +264,15 @@ musicBtn.addEventListener(
 
             bgMusic.pause();
 
-            musicBtn.textContent = "♪";
+            musicBtn.textContent =
+                "♪";
 
         } else {
 
             bgMusic.play();
 
-            musicBtn.textContent = "♫";
+            musicBtn.textContent =
+                "♫";
 
         }
 
@@ -257,8 +296,11 @@ chatBtn.addEventListener(
 
         chatError.textContent = "";
 
+
         setTimeout(() => {
+
             chatCodeInput.focus();
+
         }, 100);
 
     }
@@ -266,7 +308,7 @@ chatBtn.addEventListener(
 
 
 // =========================================
-// CLOSE CODE MODAL
+// CLOSE CHAT CODE MODAL
 // =========================================
 
 closeChat.addEventListener(
@@ -282,7 +324,7 @@ closeChat.addEventListener(
 
 
 // =========================================
-// CORRECT CODE
+// CORRECT CHAT CODE
 // =========================================
 
 function correctCode() {
@@ -302,14 +344,12 @@ function correctCode() {
     }
 
 
-    // Code correct
-
     chatModal.classList.add(
         "hidden"
     );
 
 
-    // Change music NOW
+    // Change music
 
     bgMusic.pause();
 
@@ -318,9 +358,11 @@ function correctCode() {
     chatMusic.currentTime = 0;
 
     chatMusic.play().catch(() => {
+
         console.log(
             "Browser blocked chat music autoplay."
         );
+
     });
 
 
@@ -334,8 +376,11 @@ function correctCode() {
 
     chatNameError.textContent = "";
 
+
     setTimeout(() => {
+
         chatNameInput.focus();
+
     }, 100);
 }
 
@@ -351,7 +396,9 @@ chatCodeInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
+
             correctCode();
+
         }
 
     }
@@ -359,7 +406,7 @@ chatCodeInput.addEventListener(
 
 
 // =========================================
-// CHAT NAME
+// ENTER CHAT WITH NAME
 // =========================================
 
 function enterChatWithName() {
@@ -402,7 +449,9 @@ function enterChatWithName() {
 
 
     setTimeout(() => {
+
         messageInput.focus();
+
     }, 200);
 }
 
@@ -418,7 +467,9 @@ chatNameInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
+
             enterChatWithName();
+
         }
 
     }
@@ -436,6 +487,7 @@ backFromChat.addEventListener(
         chatScreen.classList.add(
             "hidden"
         );
+
 
         dashboard.classList.add(
             "active"
@@ -468,18 +520,19 @@ async function loadMessages() {
     const {
         data,
         error
-    } = await supabaseClient
+    } =
+        await supabaseClient
 
-        .from("messages")
+            .from("messages")
 
-        .select("*")
+            .select("*")
 
-        .order(
-            "created_at",
-            {
-                ascending: true
-            }
-        );
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
 
 
     if (error) {
@@ -548,7 +601,9 @@ async function displayMessage(message) {
     let contentHTML = "";
 
 
+    // =====================================
     // IMAGE MESSAGE
+    // =====================================
 
     if (
         message.message_type === "image" &&
@@ -560,8 +615,11 @@ async function displayMessage(message) {
             error
         } =
             await supabaseClient
+
                 .storage
+
                 .from("chat-images")
+
                 .createSignedUrl(
                     message.file_path,
                     3600
@@ -588,9 +646,11 @@ async function displayMessage(message) {
         } else {
 
             contentHTML = `
+
                 <div class="message-text">
                     📷 Photo unavailable
                 </div>
+
             `;
 
         }
@@ -598,16 +658,20 @@ async function displayMessage(message) {
     }
 
 
+    // =====================================
     // TEXT MESSAGE
+    // =====================================
 
     else {
 
         contentHTML = `
 
             <div class="message-text">
+
                 ${escapeHTML(
                     message.message || ""
                 )}
+
             </div>
 
         `;
@@ -651,7 +715,6 @@ async function sendMessage() {
 
     if (!text) return;
 
-
     if (!chatName) return;
 
 
@@ -663,7 +726,9 @@ async function sendMessage() {
         error
     } =
         await supabaseClient
+
             .from("messages")
+
             .insert({
 
                 sender_name:
@@ -724,6 +789,7 @@ messageInput.addEventListener(
             event.preventDefault();
 
             sendMessage();
+
         }
 
     }
@@ -731,7 +797,7 @@ messageInput.addEventListener(
 
 
 // =========================================
-// PHOTO SEND
+// CHAT PHOTO INPUT
 // =========================================
 
 photoInput.addEventListener(
@@ -811,12 +877,13 @@ photoInput.addEventListener(
 
 
         photoInput.value = "";
+
     }
 );
 
 
 // =========================================
-// UPLOAD PHOTO
+// SEND CHAT PHOTO
 // =========================================
 
 async function sendPhoto(file) {
@@ -847,12 +914,16 @@ async function sendPhoto(file) {
         error: uploadError
     } =
         await supabaseClient
+
             .storage
+
             .from("chat-images")
+
             .upload(
                 filePath,
                 file,
                 {
+
                     cacheControl:
                         "3600",
 
@@ -861,6 +932,7 @@ async function sendPhoto(file) {
 
                     upsert:
                         false
+
                 }
             );
 
@@ -880,7 +952,9 @@ async function sendPhoto(file) {
         error: dbError
     } =
         await supabaseClient
+
             .from("messages")
+
             .insert({
 
                 sender_name:
@@ -957,6 +1031,7 @@ function startRealtimeChat() {
             )
 
             .subscribe(
+
                 status => {
 
                     console.log(
@@ -965,7 +1040,628 @@ function startRealtimeChat() {
                     );
 
                 }
+
             );
+}
+
+
+// =========================================
+// AMAZING WALL
+// =========================================
+
+
+// OPEN AMAZING WALL
+
+galleryBtn.addEventListener(
+    "click",
+    async () => {
+
+        dashboard.classList.remove(
+            "active"
+        );
+
+        galleryScreen.classList.remove(
+            "hidden"
+        );
+
+
+        await loadGallery();
+
+        startRealtimeGallery();
+
+    }
+);
+
+
+// BACK FROM AMAZING WALL
+
+backFromGallery.addEventListener(
+    "click",
+    () => {
+
+        galleryScreen.classList.add(
+            "hidden"
+        );
+
+        dashboard.classList.add(
+            "active"
+        );
+
+    }
+);
+
+
+// =========================================
+// LOAD GALLERY
+// =========================================
+
+async function loadGallery() {
+
+    galleryGrid.innerHTML = `
+
+        <div class="gallery-loading">
+            Loading amazing photos...
+        </div>
+
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("gallery_photos")
+
+            .select("*")
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Gallery loading error:",
+            error
+        );
+
+
+        galleryGrid.innerHTML = `
+
+            <div class="gallery-loading">
+
+                ❌ Gallery load nahi hui.
+
+                <br>
+
+                <small>
+                    Check Supabase table/policies.
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    galleryGrid.innerHTML = "";
+
+
+    if (!data || data.length === 0) {
+
+        galleryGrid.innerHTML = `
+
+            <div class="gallery-loading">
+
+                📸
+
+                <br><br>
+
+                Abhi wall empty hai.
+
+                <br>
+
+                Pehli amazing photo tu daal! 🔥
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    for (const photo of data) {
+
+        await displayGalleryPhoto(
+            photo
+        );
+
+    }
+
+}
+
+
+// =========================================
+// DISPLAY GALLERY PHOTO
+// =========================================
+
+async function displayGalleryPhoto(photo) {
+
+    if (!photo || !photo.image_path) {
+        return;
+    }
+
+
+    // Avoid duplicate cards
+
+    const existing =
+        document.querySelector(
+            `[data-gallery-id="${photo.id}"]`
+        );
+
+
+    if (existing) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .storage
+
+            .from("prsn-gallery")
+
+            .createSignedUrl(
+                photo.image_path,
+                3600
+            );
+
+
+    if (error || !data) {
+
+        console.error(
+            "Gallery image URL error:",
+            error
+        );
+
+        return;
+    }
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "gallery-photo-card";
+
+
+    card.dataset.galleryId =
+        photo.id;
+
+
+    const uploader =
+        escapeHTML(
+            photo.uploader_name ||
+            "UNKNOWN"
+        );
+
+
+    const date =
+        new Date(
+            photo.created_at
+        ).toLocaleDateString(
+            [],
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+
+    card.innerHTML = `
+
+        <div class="gallery-image-wrap">
+
+            <img
+                src="${data.signedUrl}"
+                class="gallery-image"
+                alt="PRSN Amazing Wall photo"
+                loading="lazy"
+            >
+
+        </div>
+
+
+        <div class="gallery-info">
+
+            <div class="gallery-uploader">
+                ${uploader}
+            </div>
+
+            <div class="gallery-date">
+                ${date}
+            </div>
+
+        </div>
+
+    `;
+
+
+    // Open larger image
+
+    const image =
+        card.querySelector(
+            ".gallery-image"
+        );
+
+
+    image.addEventListener(
+        "click",
+        () => {
+
+            window.open(
+                data.signedUrl,
+                "_blank"
+            );
+
+        }
+    );
+
+
+    galleryGrid.appendChild(
+        card
+    );
+
+}
+
+
+// =========================================
+// UPLOAD AMAZING WALL PHOTO
+// =========================================
+
+galleryInput.addEventListener(
+    "change",
+    async event => {
+
+        const file =
+            event.target.files[0];
+
+
+        if (!file) return;
+
+
+        // Check image
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            alert(
+                "Sirf image upload kar sakte ho."
+            );
+
+            galleryInput.value = "";
+
+            return;
+        }
+
+
+        // Check size
+
+        if (
+            file.size >
+            MAX_IMAGE_SIZE
+        ) {
+
+            alert(
+                "Photo 5MB se chhoti honi chahiye."
+            );
+
+            galleryInput.value = "";
+
+            return;
+        }
+
+
+        if (!currentUser) {
+
+            alert(
+                "Pehle PRSN mein enter karo."
+            );
+
+            galleryInput.value = "";
+
+            return;
+        }
+
+
+        try {
+
+            // Disable button visually
+
+            const uploadButton =
+                document.querySelector(
+                    ".gallery-upload-btn"
+                );
+
+
+            if (uploadButton) {
+
+                uploadButton.textContent =
+                    "⏳ UPLOADING...";
+
+                uploadButton.style.pointerEvents =
+                    "none";
+
+            }
+
+
+            await uploadGalleryPhoto(
+                file
+            );
+
+
+            alert(
+                "🔥 Photo Amazing Wall par upload ho gayi!"
+            );
+
+
+            await loadGallery();
+
+
+        } catch (error) {
+
+            console.error(
+                "Gallery upload error:",
+                error
+            );
+
+
+            alert(
+                "Photo upload nahi hui. Supabase policies check karo."
+            );
+
+
+        } finally {
+
+            const uploadButton =
+                document.querySelector(
+                    ".gallery-upload-btn"
+                );
+
+
+            if (uploadButton) {
+
+                uploadButton.textContent =
+                    "📸 UPLOAD PHOTO";
+
+                uploadButton.style.pointerEvents =
+                    "auto";
+
+            }
+
+
+            galleryInput.value = "";
+
+        }
+
+    }
+);
+
+
+// =========================================
+// UPLOAD GALLERY PHOTO TO STORAGE
+// =========================================
+
+async function uploadGalleryPhoto(file) {
+
+    const extension =
+        file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    const safeName =
+        Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .slice(2) +
+        "." +
+        extension;
+
+
+    const filePath =
+        "wall/" +
+        safeName;
+
+
+    // =====================================
+    // STORAGE UPLOAD
+    // =====================================
+
+    const {
+        error: uploadError
+    } =
+        await supabaseClient
+
+            .storage
+
+            .from("prsn-gallery")
+
+            .upload(
+                filePath,
+                file,
+                {
+
+                    cacheControl:
+                        "3600",
+
+                    contentType:
+                        file.type,
+
+                    upsert:
+                        false
+
+                }
+            );
+
+
+    if (uploadError) {
+
+        console.error(
+            "Gallery storage upload error:",
+            uploadError
+        );
+
+        throw uploadError;
+    }
+
+
+    // =====================================
+    // DATABASE ENTRY
+    // =====================================
+
+    const {
+        error: dbError
+    } =
+        await supabaseClient
+
+            .from("gallery_photos")
+
+            .insert({
+
+                uploader_name:
+                    currentUser,
+
+                image_path:
+                    filePath,
+
+                caption:
+                    null
+
+            });
+
+
+    if (dbError) {
+
+        console.error(
+            "Gallery database error:",
+            dbError
+        );
+
+
+        // Try deleting uploaded file
+        // if database insert failed
+
+        await supabaseClient
+
+            .storage
+
+            .from("prsn-gallery")
+
+            .remove([
+                filePath
+            ]);
+
+
+        throw dbError;
+    }
+
+}
+
+
+// =========================================
+// REALTIME AMAZING WALL
+// =========================================
+
+function startRealtimeGallery() {
+
+    if (galleryChannel) return;
+
+
+    galleryChannel =
+        supabaseClient
+
+            .channel(
+                "prsn-amazing-wall"
+            )
+
+            .on(
+
+                "postgres_changes",
+
+                {
+
+                    event: "INSERT",
+
+                    schema: "public",
+
+                    table: "gallery_photos"
+
+                },
+
+                async payload => {
+
+                    console.log(
+                        "🔥 NEW AMAZING WALL PHOTO:",
+                        payload.new
+                    );
+
+
+                    // Only update if gallery is open
+
+                    if (
+                        galleryScreen.classList.contains(
+                            "hidden"
+                        )
+                    ) {
+
+                        return;
+                    }
+
+
+                    await displayGalleryPhoto(
+                        payload.new
+                    );
+
+                }
+
+            )
+
+            .subscribe(
+
+                status => {
+
+                    console.log(
+                        "PRSN gallery realtime:",
+                        status
+                    );
+
+                }
+
+            );
+
 }
 
 
@@ -1007,6 +1703,7 @@ async function updateLastSeen() {
         );
 
     }
+
 }
 
 
@@ -1016,7 +1713,9 @@ setInterval(
     () => {
 
         if (currentUser) {
+
             updateLastSeen();
+
         }
 
     },
@@ -1035,21 +1734,24 @@ function escapeHTML(text) {
             "div"
         );
 
+
     div.textContent =
         String(text);
+
 
     return div.innerHTML;
 }
 
 
 // =========================================
-// SCROLL
+// SCROLL CHAT
 // =========================================
 
 function scrollMessagesToBottom() {
 
     messagesBox.scrollTop =
         messagesBox.scrollHeight;
+
 }
 
 
@@ -1085,10 +1787,12 @@ async function testSupabase() {
         "✅ PRSN SUPABASE CONNECTED!"
     );
 
+
     console.log(
         "Members:",
         data
     );
+
 }
 
 
