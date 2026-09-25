@@ -32,6 +32,9 @@ const CHAT_CODE = "BACHYO";
 const MAX_IMAGE_SIZE =
     5 * 1024 * 1024;
 
+const MAX_VOICE_SIZE =
+    10 * 1024 * 1024;
+
 
 // =========================================
 // VARIABLES
@@ -46,11 +49,24 @@ let chatChannel = null;
 let galleryChannel = null;
 
 
+// VOICE VARIABLES
+
+let mediaRecorder = null;
+
+let voiceChunks = [];
+
+let voiceStream = null;
+
+let voiceRecording = false;
+
+let voiceStartTime = null;
+
+let voiceTimerInterval = null;
+
+
 // =========================================
 // ELEMENTS
 // =========================================
-
-// NAME
 
 const nameScreen =
     document.getElementById("nameScreen");
@@ -74,8 +90,6 @@ const welcomeUser =
     document.getElementById("welcomeUser");
 
 
-// MUSIC
-
 const bgMusic =
     document.getElementById("bgMusic");
 
@@ -86,13 +100,10 @@ const musicBtn =
     document.getElementById("musicBtn");
 
 
-// CHAT BUTTON
+// CHAT
 
 const chatBtn =
     document.getElementById("chatBtn");
-
-
-// CHAT CODE MODAL
 
 const chatModal =
     document.getElementById("chatModal");
@@ -110,8 +121,6 @@ const chatError =
     document.getElementById("chatError");
 
 
-// CHAT NAME MODAL
-
 const chatNameModal =
     document.getElementById("chatNameModal");
 
@@ -125,13 +134,12 @@ const chatNameError =
     document.getElementById("chatNameError");
 
 
-// CHAT SCREEN
-
 const chatScreen =
     document.getElementById("chatScreen");
 
 const backFromChat =
     document.getElementById("backFromChat");
+
 
 const messagesBox =
     document.getElementById("messages");
@@ -142,13 +150,27 @@ const messageInput =
 const sendMessageBtn =
     document.getElementById("sendMessage");
 
+
 const photoInput =
     document.getElementById("photoInput");
 
 
-// =========================================
-// AMAZING WALL ELEMENTS
-// =========================================
+// VOICE
+
+const voiceRecordBtn =
+    document.getElementById("voiceRecordBtn");
+
+const voiceStatus =
+    document.getElementById("voiceStatus");
+
+const voiceStatusText =
+    document.getElementById("voiceStatusText");
+
+const voiceTimer =
+    document.getElementById("voiceTimer");
+
+
+// GALLERY
 
 const galleryBtn =
     document.getElementById("galleryBtn");
@@ -215,8 +237,6 @@ async function enterPRSN() {
     );
 
 
-    // Start background music
-
     bgMusic.currentTime = 0;
 
     bgMusic.play().catch(() => {
@@ -243,9 +263,7 @@ nameInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
-
             enterPRSN();
-
         }
 
     }
@@ -253,7 +271,7 @@ nameInput.addEventListener(
 
 
 // =========================================
-// MUSIC BUTTON
+// MUSIC
 // =========================================
 
 musicBtn.addEventListener(
@@ -264,15 +282,13 @@ musicBtn.addEventListener(
 
             bgMusic.pause();
 
-            musicBtn.textContent =
-                "♪";
+            musicBtn.textContent = "♪";
 
         } else {
 
             bgMusic.play();
 
-            musicBtn.textContent =
-                "♫";
+            musicBtn.textContent = "♫";
 
         }
 
@@ -296,7 +312,6 @@ chatBtn.addEventListener(
 
         chatError.textContent = "";
 
-
         setTimeout(() => {
 
             chatCodeInput.focus();
@@ -308,7 +323,7 @@ chatBtn.addEventListener(
 
 
 // =========================================
-// CLOSE CHAT CODE MODAL
+// CLOSE CHAT MODAL
 // =========================================
 
 closeChat.addEventListener(
@@ -324,7 +339,7 @@ closeChat.addEventListener(
 
 
 // =========================================
-// CORRECT CHAT CODE
+// CORRECT CODE
 // =========================================
 
 function correctCode() {
@@ -349,8 +364,6 @@ function correctCode() {
     );
 
 
-    // Change music
-
     bgMusic.pause();
 
     bgMusic.currentTime = 0;
@@ -366,8 +379,6 @@ function correctCode() {
     });
 
 
-    // Ask chat name
-
     chatNameModal.classList.remove(
         "hidden"
     );
@@ -375,7 +386,6 @@ function correctCode() {
     chatNameInput.value = "";
 
     chatNameError.textContent = "";
-
 
     setTimeout(() => {
 
@@ -396,9 +406,7 @@ chatCodeInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
-
             correctCode();
-
         }
 
     }
@@ -406,14 +414,13 @@ chatCodeInput.addEventListener(
 
 
 // =========================================
-// ENTER CHAT WITH NAME
+// ENTER CHAT
 // =========================================
 
 function enterChatWithName() {
 
     const entered =
-        chatNameInput.value
-            .trim();
+        chatNameInput.value.trim();
 
 
     if (!entered) {
@@ -432,11 +439,9 @@ function enterChatWithName() {
         "hidden"
     );
 
-
     dashboard.classList.remove(
         "active"
     );
-
 
     chatScreen.classList.remove(
         "hidden"
@@ -467,9 +472,7 @@ chatNameInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
-
             enterChatWithName();
-
         }
 
     }
@@ -482,19 +485,21 @@ chatNameInput.addEventListener(
 
 backFromChat.addEventListener(
     "click",
-    () => {
+    async () => {
+
+        if (voiceRecording) {
+            await cancelVoiceRecording();
+        }
+
 
         chatScreen.classList.add(
             "hidden"
         );
 
-
         dashboard.classList.add(
             "active"
         );
 
-
-        // Change music back
 
         chatMusic.pause();
 
@@ -520,19 +525,18 @@ async function loadMessages() {
     const {
         data,
         error
-    } =
-        await supabaseClient
+    } = await supabaseClient
 
-            .from("messages")
+        .from("messages")
 
-            .select("*")
+        .select("*")
 
-            .order(
-                "created_at",
-                {
-                    ascending: true
-                }
-            );
+        .order(
+            "created_at",
+            {
+                ascending: true
+            }
+        );
 
 
     if (error) {
@@ -565,10 +569,20 @@ async function loadMessages() {
 
 async function displayMessage(message) {
 
-    const div =
-        document.createElement(
-            "div"
+    // Prevent accidental duplicate realtime cards
+
+    const existing =
+        document.querySelector(
+            `[data-message-id="${message.id}"]`
         );
+
+    if (existing) {
+        return;
+    }
+
+
+    const div =
+        document.createElement("div");
 
 
     div.className =
@@ -578,6 +592,10 @@ async function displayMessage(message) {
                 ? "mine"
                 : ""
         );
+
+
+    div.dataset.messageId =
+        message.id;
 
 
     const time =
@@ -601,9 +619,9 @@ async function displayMessage(message) {
     let contentHTML = "";
 
 
-    // =====================================
-    // IMAGE MESSAGE
-    // =====================================
+    // =========================================
+    // IMAGE
+    // =========================================
 
     if (
         message.message_type === "image" &&
@@ -615,11 +633,8 @@ async function displayMessage(message) {
             error
         } =
             await supabaseClient
-
                 .storage
-
                 .from("chat-images")
-
                 .createSignedUrl(
                     message.file_path,
                     3600
@@ -658,20 +673,76 @@ async function displayMessage(message) {
     }
 
 
-    // =====================================
-    // TEXT MESSAGE
-    // =====================================
+    // =========================================
+    // VOICE
+    // =========================================
+
+    else if (
+        message.message_type === "voice" &&
+        message.file_path
+    ) {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from("chat-voice")
+                .createSignedUrl(
+                    message.file_path,
+                    3600
+                );
+
+
+        if (!error && data) {
+
+            contentHTML = `
+
+                <div class="voice-message">
+
+                    <div class="voice-message-icon">
+                        🎙️
+                    </div>
+
+                    <audio
+                        class="voice-audio"
+                        controls
+                        preload="metadata"
+                        src="${data.signedUrl}"
+                    ></audio>
+
+                </div>
+
+            `;
+
+        } else {
+
+            contentHTML = `
+
+                <div class="message-text">
+                    🎙️ Voice unavailable
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    // =========================================
+    // TEXT
+    // =========================================
 
     else {
 
         contentHTML = `
 
             <div class="message-text">
-
                 ${escapeHTML(
                     message.message || ""
                 )}
-
             </div>
 
         `;
@@ -704,7 +775,7 @@ async function displayMessage(message) {
 
 
 // =========================================
-// SEND TEXT MESSAGE
+// SEND TEXT
 // =========================================
 
 async function sendMessage() {
@@ -789,7 +860,6 @@ messageInput.addEventListener(
             event.preventDefault();
 
             sendMessage();
-
         }
 
     }
@@ -797,7 +867,7 @@ messageInput.addEventListener(
 
 
 // =========================================
-// CHAT PHOTO INPUT
+// PHOTO SEND
 // =========================================
 
 photoInput.addEventListener(
@@ -810,8 +880,6 @@ photoInput.addEventListener(
 
         if (!file) return;
 
-
-        // Image check
 
         if (
             !file.type.startsWith(
@@ -828,8 +896,6 @@ photoInput.addEventListener(
             return;
         }
 
-
-        // Size check
 
         if (
             file.size >
@@ -877,13 +943,12 @@ photoInput.addEventListener(
 
 
         photoInput.value = "";
-
     }
 );
 
 
 // =========================================
-// SEND CHAT PHOTO
+// UPLOAD PHOTO
 // =========================================
 
 async function sendPhoto(file) {
@@ -914,16 +979,12 @@ async function sendPhoto(file) {
         error: uploadError
     } =
         await supabaseClient
-
             .storage
-
             .from("chat-images")
-
             .upload(
                 filePath,
                 file,
                 {
-
                     cacheControl:
                         "3600",
 
@@ -932,7 +993,6 @@ async function sendPhoto(file) {
 
                     upsert:
                         false
-
                 }
             );
 
@@ -985,12 +1045,603 @@ async function sendPhoto(file) {
 
 
 // =========================================
+// VOICE RECORDING
+// =========================================
+
+voiceRecordBtn.addEventListener(
+    "pointerdown",
+    startVoiceRecording
+);
+
+
+voiceRecordBtn.addEventListener(
+    "pointerup",
+    stopVoiceRecording
+);
+
+
+voiceRecordBtn.addEventListener(
+    "pointerleave",
+    () => {
+
+        if (voiceRecording) {
+            stopVoiceRecording();
+        }
+
+    }
+);
+
+
+voiceRecordBtn.addEventListener(
+    "pointercancel",
+    () => {
+
+        if (voiceRecording) {
+            cancelVoiceRecording();
+        }
+
+    }
+);
+
+
+// Prevent double firing
+
+voiceRecordBtn.addEventListener(
+    "contextmenu",
+    event => {
+        event.preventDefault();
+    }
+);
+
+
+// =========================================
+// START RECORDING
+// =========================================
+
+async function startVoiceRecording(event) {
+
+    event.preventDefault();
+
+
+    if (voiceRecording) {
+        return;
+    }
+
+
+    if (!chatName) {
+
+        alert(
+            "Pehle chat mein enter karo."
+        );
+
+        return;
+    }
+
+
+    if (
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+    ) {
+
+        alert(
+            "Is browser mein microphone recording supported nahi hai."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        voiceStream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+
+        let mimeType =
+            "audio/webm";
+
+
+        if (
+            MediaRecorder.isTypeSupported(
+                "audio/webm;codecs=opus"
+            )
+        ) {
+
+            mimeType =
+                "audio/webm;codecs=opus";
+
+        } else if (
+            MediaRecorder.isTypeSupported(
+                "audio/mp4"
+            )
+        ) {
+
+            mimeType =
+                "audio/mp4";
+
+        }
+
+
+        mediaRecorder =
+            new MediaRecorder(
+                voiceStream,
+                {
+                    mimeType
+                }
+            );
+
+
+        voiceChunks = [];
+
+        voiceRecording = true;
+
+        voiceStartTime =
+            Date.now();
+
+
+        mediaRecorder.addEventListener(
+            "dataavailable",
+            event => {
+
+                if (
+                    event.data &&
+                    event.data.size > 0
+                ) {
+
+                    voiceChunks.push(
+                        event.data
+                    );
+
+                }
+
+            }
+        );
+
+
+        mediaRecorder.addEventListener(
+            "stop",
+            async () => {
+
+                const finalType =
+                    mediaRecorder.mimeType ||
+                    mimeType;
+
+
+                const blob =
+                    new Blob(
+                        voiceChunks,
+                        {
+                            type:
+                                finalType
+                        }
+                    );
+
+
+                cleanupVoiceUI();
+
+
+                if (
+                    blob.size === 0
+                ) {
+
+                    return;
+                }
+
+
+                try {
+
+                    await uploadVoice(
+                        blob,
+                        finalType
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Voice upload error:",
+                        error
+                    );
+
+                    alert(
+                        "Voice send nahi hui."
+                    );
+
+                }
+
+            }
+        );
+
+
+        mediaRecorder.start();
+
+
+        voiceStatus.classList.remove(
+            "hidden"
+        );
+
+
+        voiceRecordBtn.classList.add(
+            "recording"
+        );
+
+
+        voiceStatusText.textContent =
+            "Recording...";
+
+
+        updateVoiceTimer();
+
+
+        voiceTimerInterval =
+            setInterval(
+                updateVoiceTimer,
+                250
+            );
+
+
+    } catch (error) {
+
+        console.error(
+            "Microphone error:",
+            error
+        );
+
+
+        alert(
+            "Microphone permission allow karni padegi."
+        );
+
+
+        cleanupVoiceUI();
+    }
+}
+
+
+// =========================================
+// STOP RECORDING
+// =========================================
+
+async function stopVoiceRecording() {
+
+    if (
+        !voiceRecording ||
+        !mediaRecorder
+    ) {
+        return;
+    }
+
+
+    voiceRecording = false;
+
+
+    voiceStatusText.textContent =
+        "Sending...";
+
+
+    voiceRecordBtn.classList.remove(
+        "recording"
+    );
+
+
+    if (
+        mediaRecorder.state !==
+        "inactive"
+    ) {
+
+        mediaRecorder.stop();
+
+    }
+
+
+    stopVoiceStream();
+}
+
+
+// =========================================
+// CANCEL RECORDING
+// =========================================
+
+async function cancelVoiceRecording() {
+
+    if (!voiceRecording) {
+        return;
+    }
+
+
+    voiceRecording = false;
+
+
+    if (
+        mediaRecorder &&
+        mediaRecorder.state !==
+        "inactive"
+    ) {
+
+        mediaRecorder.ondataavailable =
+            null;
+
+        mediaRecorder.onstop =
+            null;
+
+        mediaRecorder.stop();
+
+    }
+
+
+    voiceChunks = [];
+
+
+    stopVoiceStream();
+
+    cleanupVoiceUI();
+}
+
+
+// =========================================
+// UPLOAD VOICE
+// =========================================
+
+async function uploadVoice(
+    blob,
+    mimeType
+) {
+
+    if (!chatName) {
+        return;
+    }
+
+
+    if (
+        blob.size >
+        MAX_VOICE_SIZE
+    ) {
+
+        alert(
+            "Voice recording 10MB se chhoti honi chahiye."
+        );
+
+        return;
+    }
+
+
+    let extension =
+        "webm";
+
+
+    if (
+        mimeType.includes(
+            "mp4"
+        )
+    ) {
+
+        extension =
+            "m4a";
+
+    } else if (
+        mimeType.includes(
+            "ogg"
+        )
+    ) {
+
+        extension =
+            "ogg";
+    }
+
+
+    const safeName =
+        Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .slice(2) +
+        "." +
+        extension;
+
+
+    const filePath =
+        "voice/" +
+        safeName;
+
+
+    const {
+        error: uploadError
+    } =
+        await supabaseClient
+
+            .storage
+
+            .from("chat-voice")
+
+            .upload(
+                filePath,
+                blob,
+                {
+                    cacheControl:
+                        "3600",
+
+                    contentType:
+                        mimeType,
+
+                    upsert:
+                        false
+                }
+            );
+
+
+    if (uploadError) {
+
+        console.error(
+            "Voice storage error:",
+            uploadError
+        );
+
+        throw uploadError;
+    }
+
+
+    const {
+        error: dbError
+    } =
+        await supabaseClient
+
+            .from("messages")
+
+            .insert({
+
+                sender_name:
+                    chatName,
+
+                message:
+                    "🎙️ Voice message",
+
+                message_type:
+                    "voice",
+
+                file_path:
+                    filePath
+
+            });
+
+
+    if (dbError) {
+
+        console.error(
+            "Voice database error:",
+            dbError
+        );
+
+
+        // Remove orphaned file
+
+        await supabaseClient
+            .storage
+            .from("chat-voice")
+            .remove([
+                filePath
+            ]);
+
+
+        throw dbError;
+    }
+}
+
+
+// =========================================
+// VOICE TIMER
+// =========================================
+
+function updateVoiceTimer() {
+
+    if (!voiceStartTime) {
+        return;
+    }
+
+
+    const elapsed =
+        Math.floor(
+            (
+                Date.now() -
+                voiceStartTime
+            ) / 1000
+        );
+
+
+    const minutes =
+        Math.floor(
+            elapsed / 60
+        );
+
+
+    const seconds =
+        elapsed % 60;
+
+
+    voiceTimer.textContent =
+        minutes +
+        ":" +
+        String(seconds)
+            .padStart(2, "0");
+}
+
+
+// =========================================
+// VOICE UI CLEANUP
+// =========================================
+
+function cleanupVoiceUI() {
+
+    clearInterval(
+        voiceTimerInterval
+    );
+
+
+    voiceTimerInterval =
+        null;
+
+
+    voiceRecording =
+        false;
+
+
+    voiceStartTime =
+        null;
+
+
+    voiceStatus.classList.add(
+        "hidden"
+    );
+
+
+    voiceRecordBtn.classList.remove(
+        "recording"
+    );
+
+
+    voiceStatusText.textContent =
+        "Recording...";
+
+
+    voiceTimer.textContent =
+        "0:00";
+}
+
+
+// =========================================
+// STOP MICROPHONE
+// =========================================
+
+function stopVoiceStream() {
+
+    if (!voiceStream) {
+        return;
+    }
+
+
+    voiceStream
+        .getTracks()
+        .forEach(
+            track => {
+                track.stop();
+            }
+        );
+
+
+    voiceStream =
+        null;
+}
+
+
+// =========================================
 // REALTIME CHAT
 // =========================================
 
 function startRealtimeChat() {
 
-    if (chatChannel) return;
+    if (chatChannel) {
+        return;
+    }
 
 
     chatChannel =
@@ -1006,11 +1657,14 @@ function startRealtimeChat() {
 
                 {
 
-                    event: "INSERT",
+                    event:
+                        "INSERT",
 
-                    schema: "public",
+                    schema:
+                        "public",
 
-                    table: "messages"
+                    table:
+                        "messages"
 
                 },
 
@@ -1031,7 +1685,6 @@ function startRealtimeChat() {
             )
 
             .subscribe(
-
                 status => {
 
                     console.log(
@@ -1040,17 +1693,56 @@ function startRealtimeChat() {
                     );
 
                 }
-
             );
+}
+
+
+// =========================================
+// LAST SEEN
+// =========================================
+
+async function updateLastSeen() {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .from("members")
+
+            .update({
+
+                last_seen_at:
+                    new Date()
+                        .toISOString()
+
+            })
+
+            .eq(
+                "name",
+                currentUser
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Last seen error:",
+            error
+        );
+
+    }
 }
 
 
 // =========================================
 // AMAZING WALL
 // =========================================
-
-
-// OPEN AMAZING WALL
 
 galleryBtn.addEventListener(
     "click",
@@ -1059,6 +1751,7 @@ galleryBtn.addEventListener(
         dashboard.classList.remove(
             "active"
         );
+
 
         galleryScreen.classList.remove(
             "hidden"
@@ -1073,7 +1766,9 @@ galleryBtn.addEventListener(
 );
 
 
-// BACK FROM AMAZING WALL
+// =========================================
+// BACK FROM GALLERY
+// =========================================
 
 backFromGallery.addEventListener(
     "click",
@@ -1100,7 +1795,7 @@ async function loadGallery() {
     galleryGrid.innerHTML = `
 
         <div class="gallery-loading">
-            Loading amazing photos...
+            Loading amazing moments...
         </div>
 
     `;
@@ -1135,15 +1830,7 @@ async function loadGallery() {
         galleryGrid.innerHTML = `
 
             <div class="gallery-loading">
-
-                ❌ Gallery load nahi hui.
-
-                <br>
-
-                <small>
-                    Check Supabase table/policies.
-                </small>
-
+                Gallery load nahi hui.
             </div>
 
         `;
@@ -1160,17 +1847,7 @@ async function loadGallery() {
         galleryGrid.innerHTML = `
 
             <div class="gallery-loading">
-
-                📸
-
-                <br><br>
-
-                Abhi wall empty hai.
-
-                <br>
-
-                Pehli amazing photo tu daal! 🔥
-
+                Abhi wall khaali hai 😭
             </div>
 
         `;
@@ -1186,7 +1863,6 @@ async function loadGallery() {
         );
 
     }
-
 }
 
 
@@ -1194,14 +1870,9 @@ async function loadGallery() {
 // DISPLAY GALLERY PHOTO
 // =========================================
 
-async function displayGalleryPhoto(photo) {
-
-    if (!photo || !photo.image_path) {
-        return;
-    }
-
-
-    // Avoid duplicate cards
+async function displayGalleryPhoto(
+    photo
+) {
 
     const existing =
         document.querySelector(
@@ -1230,7 +1901,10 @@ async function displayGalleryPhoto(photo) {
             );
 
 
-    if (error || !data) {
+    if (
+        error ||
+        !data
+    ) {
 
         console.error(
             "Gallery image URL error:",
@@ -1255,22 +1929,20 @@ async function displayGalleryPhoto(photo) {
         photo.id;
 
 
-    const uploader =
-        escapeHTML(
-            photo.uploader_name ||
-            "UNKNOWN"
-        );
-
-
     const date =
         new Date(
             photo.created_at
         ).toLocaleDateString(
             [],
             {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
             }
         );
 
@@ -1280,9 +1952,9 @@ async function displayGalleryPhoto(photo) {
         <div class="gallery-image-wrap">
 
             <img
-                src="${data.signedUrl}"
                 class="gallery-image"
-                alt="PRSN Amazing Wall photo"
+                src="${data.signedUrl}"
+                alt="PRSN photo"
                 loading="lazy"
             >
 
@@ -1292,7 +1964,9 @@ async function displayGalleryPhoto(photo) {
         <div class="gallery-info">
 
             <div class="gallery-uploader">
-                ${uploader}
+                ${escapeHTML(
+                    photo.uploader_name
+                )}
             </div>
 
             <div class="gallery-date">
@@ -1303,8 +1977,6 @@ async function displayGalleryPhoto(photo) {
 
     `;
 
-
-    // Open larger image
 
     const image =
         card.querySelector(
@@ -1328,12 +2000,11 @@ async function displayGalleryPhoto(photo) {
     galleryGrid.appendChild(
         card
     );
-
 }
 
 
 // =========================================
-// UPLOAD AMAZING WALL PHOTO
+// GALLERY UPLOAD
 // =========================================
 
 galleryInput.addEventListener(
@@ -1344,10 +2015,10 @@ galleryInput.addEventListener(
             event.target.files[0];
 
 
-        if (!file) return;
+        if (!file) {
+            return;
+        }
 
-
-        // Check image
 
         if (
             !file.type.startsWith(
@@ -1356,16 +2027,15 @@ galleryInput.addEventListener(
         ) {
 
             alert(
-                "Sirf image upload kar sakte ho."
+                "Sirf image upload kar."
             );
 
-            galleryInput.value = "";
+            galleryInput.value =
+                "";
 
             return;
         }
 
-
-        // Check size
 
         if (
             file.size >
@@ -1376,7 +2046,8 @@ galleryInput.addEventListener(
                 "Photo 5MB se chhoti honi chahiye."
             );
 
-            galleryInput.value = "";
+            galleryInput.value =
+                "";
 
             return;
         }
@@ -1388,32 +2059,32 @@ galleryInput.addEventListener(
                 "Pehle PRSN mein enter karo."
             );
 
-            galleryInput.value = "";
+            galleryInput.value =
+                "";
 
             return;
         }
 
 
+        const uploadButton =
+            document.querySelector(
+                ".gallery-upload-btn"
+            );
+
+
+        const oldText =
+            uploadButton.textContent;
+
+
+        uploadButton.textContent =
+            "⏳ UPLOADING...";
+
+
+        uploadButton.style.pointerEvents =
+            "none";
+
+
         try {
-
-            // Disable button visually
-
-            const uploadButton =
-                document.querySelector(
-                    ".gallery-upload-btn"
-                );
-
-
-            if (uploadButton) {
-
-                uploadButton.textContent =
-                    "⏳ UPLOADING...";
-
-                uploadButton.style.pointerEvents =
-                    "none";
-
-            }
-
 
             await uploadGalleryPhoto(
                 file
@@ -1421,7 +2092,7 @@ galleryInput.addEventListener(
 
 
             alert(
-                "🔥 Photo Amazing Wall par upload ho gayi!"
+                "🔥 Photo Amazing Wall pe aa gayi!"
             );
 
 
@@ -1437,42 +2108,33 @@ galleryInput.addEventListener(
 
 
             alert(
-                "Photo upload nahi hui. Supabase policies check karo."
+                "Photo upload nahi hui."
             );
-
-
-        } finally {
-
-            const uploadButton =
-                document.querySelector(
-                    ".gallery-upload-btn"
-                );
-
-
-            if (uploadButton) {
-
-                uploadButton.textContent =
-                    "📸 UPLOAD PHOTO";
-
-                uploadButton.style.pointerEvents =
-                    "auto";
-
-            }
-
-
-            galleryInput.value = "";
 
         }
 
+
+        uploadButton.textContent =
+            oldText;
+
+
+        uploadButton.style.pointerEvents =
+            "";
+
+
+        galleryInput.value =
+            "";
     }
 );
 
 
 // =========================================
-// UPLOAD GALLERY PHOTO TO STORAGE
+// UPLOAD GALLERY PHOTO
 // =========================================
 
-async function uploadGalleryPhoto(file) {
+async function uploadGalleryPhoto(
+    file
+) {
 
     const extension =
         file.name
@@ -1496,10 +2158,6 @@ async function uploadGalleryPhoto(file) {
         safeName;
 
 
-    // =====================================
-    // STORAGE UPLOAD
-    // =====================================
-
     const {
         error: uploadError
     } =
@@ -1513,7 +2171,6 @@ async function uploadGalleryPhoto(file) {
                 filePath,
                 file,
                 {
-
                     cacheControl:
                         "3600",
 
@@ -1522,25 +2179,15 @@ async function uploadGalleryPhoto(file) {
 
                     upsert:
                         false
-
                 }
             );
 
 
     if (uploadError) {
 
-        console.error(
-            "Gallery storage upload error:",
-            uploadError
-        );
-
         throw uploadError;
     }
 
-
-    // =====================================
-    // DATABASE ENTRY
-    // =====================================
 
     const {
         error: dbError
@@ -1565,21 +2212,9 @@ async function uploadGalleryPhoto(file) {
 
     if (dbError) {
 
-        console.error(
-            "Gallery database error:",
-            dbError
-        );
-
-
-        // Try deleting uploaded file
-        // if database insert failed
-
         await supabaseClient
-
             .storage
-
             .from("prsn-gallery")
-
             .remove([
                 filePath
             ]);
@@ -1587,17 +2222,18 @@ async function uploadGalleryPhoto(file) {
 
         throw dbError;
     }
-
 }
 
 
 // =========================================
-// REALTIME AMAZING WALL
+// REALTIME GALLERY
 // =========================================
 
 function startRealtimeGallery() {
 
-    if (galleryChannel) return;
+    if (galleryChannel) {
+        return;
+    }
 
 
     galleryChannel =
@@ -1613,23 +2249,18 @@ function startRealtimeGallery() {
 
                 {
 
-                    event: "INSERT",
+                    event:
+                        "INSERT",
 
-                    schema: "public",
+                    schema:
+                        "public",
 
-                    table: "gallery_photos"
+                    table:
+                        "gallery_photos"
 
                 },
 
                 async payload => {
-
-                    console.log(
-                        "🔥 NEW AMAZING WALL PHOTO:",
-                        payload.new
-                    );
-
-
-                    // Only update if gallery is open
 
                     if (
                         galleryScreen.classList.contains(
@@ -1650,7 +2281,6 @@ function startRealtimeGallery() {
             )
 
             .subscribe(
-
                 status => {
 
                     console.log(
@@ -1659,99 +2289,50 @@ function startRealtimeGallery() {
                     );
 
                 }
-
             );
-
 }
 
 
 // =========================================
-// LAST SEEN
-// =========================================
-
-async function updateLastSeen() {
-
-    if (!currentUser) return;
-
-
-    const {
-        error
-    } =
-        await supabaseClient
-
-            .from("members")
-
-            .update({
-
-                last_seen_at:
-                    new Date()
-                        .toISOString()
-
-            })
-
-            .eq(
-                "name",
-                currentUser
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Last seen error:",
-            error
-        );
-
-    }
-
-}
-
-
-// Update activity periodically
-
-setInterval(
-    () => {
-
-        if (currentUser) {
-
-            updateLastSeen();
-
-        }
-
-    },
-    60000
-);
-
-
-// =========================================
-// HTML ESCAPE
-// =========================================
-
-function escapeHTML(text) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        String(text);
-
-
-    return div.innerHTML;
-}
-
-
-// =========================================
-// SCROLL CHAT
+// SCROLL
 // =========================================
 
 function scrollMessagesToBottom() {
 
     messagesBox.scrollTop =
         messagesBox.scrollHeight;
+}
 
+
+// =========================================
+// ESCAPE HTML
+// =========================================
+
+function escapeHTML(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
@@ -1769,31 +2350,32 @@ async function testSupabase() {
 
             .from("members")
 
-            .select("*");
+            .select("name");
 
 
     if (error) {
 
         console.error(
-            "❌ Supabase connection failed:",
+            "Supabase test failed:",
             error
         );
 
-        return;
+        return false;
     }
 
 
     console.log(
-        "✅ PRSN SUPABASE CONNECTED!"
-    );
-
-
-    console.log(
-        "Members:",
+        "🔥 Supabase connected:",
         data
     );
 
+
+    return true;
 }
 
+
+// =========================================
+// START TEST
+// =========================================
 
 testSupabase();
