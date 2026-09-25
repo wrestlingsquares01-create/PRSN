@@ -8,7 +8,6 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_Gp8pbf7ciC-QHUhMg6lyzA_WT6UaKoB";
 
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -41,27 +40,66 @@ const MAX_VOICE_SIZE =
 // =========================================
 
 let currentUser = null;
-
 let chatName = null;
 
 let chatChannel = null;
-
 let galleryChannel = null;
 
 
+// =========================================
 // VOICE VARIABLES
+// =========================================
 
 let mediaRecorder = null;
-
 let voiceChunks = [];
-
 let voiceStream = null;
 
 let voiceRecording = false;
-
 let voiceStartTime = null;
-
 let voiceTimerInterval = null;
+
+
+// =========================================
+// CHAT MUSIC / VOICE CONTROL
+// =========================================
+
+let chatMusicWasPlaying = false;
+
+
+/*
+    Jab voice record ya voice playback start hoga,
+    song2.mp3 pause ho jayega.
+*/
+
+function pauseChatMusicForVoice() {
+
+    chatMusicWasPlaying =
+        !chatMusic.paused;
+
+    if (chatMusicWasPlaying) {
+
+        chatMusic.pause();
+
+    }
+}
+
+
+/*
+    Voice record/playback khatam hone ke baad
+    song2.mp3 wahi se continue hoga.
+*/
+
+function resumeChatMusicAfterVoice() {
+
+    if (chatMusicWasPlaying) {
+
+        chatMusic
+            .play()
+            .catch(() => {});
+
+        chatMusicWasPlaying = false;
+    }
+}
 
 
 // =========================================
@@ -90,6 +128,10 @@ const welcomeUser =
     document.getElementById("welcomeUser");
 
 
+// =========================================
+// MUSIC
+// =========================================
+
 const bgMusic =
     document.getElementById("bgMusic");
 
@@ -100,7 +142,9 @@ const musicBtn =
     document.getElementById("musicBtn");
 
 
+// =========================================
 // CHAT
+// =========================================
 
 const chatBtn =
     document.getElementById("chatBtn");
@@ -121,6 +165,10 @@ const chatError =
     document.getElementById("chatError");
 
 
+// =========================================
+// CHAT NAME
+// =========================================
+
 const chatNameModal =
     document.getElementById("chatNameModal");
 
@@ -134,12 +182,15 @@ const chatNameError =
     document.getElementById("chatNameError");
 
 
+// =========================================
+// CHAT SCREEN
+// =========================================
+
 const chatScreen =
     document.getElementById("chatScreen");
 
 const backFromChat =
     document.getElementById("backFromChat");
-
 
 const messagesBox =
     document.getElementById("messages");
@@ -150,12 +201,13 @@ const messageInput =
 const sendMessageBtn =
     document.getElementById("sendMessage");
 
-
 const photoInput =
     document.getElementById("photoInput");
 
 
-// VOICE
+// =========================================
+// VOICE ELEMENTS
+// =========================================
 
 const voiceRecordBtn =
     document.getElementById("voiceRecordBtn");
@@ -170,7 +222,9 @@ const voiceTimer =
     document.getElementById("voiceTimer");
 
 
+// =========================================
 // GALLERY
+// =========================================
 
 const galleryBtn =
     document.getElementById("galleryBtn");
@@ -218,7 +272,8 @@ async function enterPRSN() {
     }
 
 
-    currentUser = typedName;
+    currentUser =
+        typedName;
 
 
     currentUserElement.textContent =
@@ -239,13 +294,15 @@ async function enterPRSN() {
 
     bgMusic.currentTime = 0;
 
-    bgMusic.play().catch(() => {
+    bgMusic
+        .play()
+        .catch(() => {
 
-        console.log(
-            "Browser blocked autoplay."
-        );
+            console.log(
+                "Browser blocked autoplay."
+            );
 
-    });
+        });
 
 
     await updateLastSeen();
@@ -263,7 +320,9 @@ nameInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
+
             enterPRSN();
+
         }
 
     }
@@ -271,7 +330,7 @@ nameInput.addEventListener(
 
 
 // =========================================
-// MUSIC
+// MUSIC BUTTON
 // =========================================
 
 musicBtn.addEventListener(
@@ -282,14 +341,17 @@ musicBtn.addEventListener(
 
             bgMusic.pause();
 
-            musicBtn.textContent = "♪";
+            musicBtn.textContent =
+                "♪";
 
         } else {
 
-            bgMusic.play();
+            bgMusic
+                .play()
+                .catch(() => {});
 
-            musicBtn.textContent = "♫";
-
+            musicBtn.textContent =
+                "♫";
         }
 
     }
@@ -308,15 +370,20 @@ chatBtn.addEventListener(
             "hidden"
         );
 
-        chatCodeInput.value = "";
+        chatCodeInput.value =
+            "";
 
-        chatError.textContent = "";
+        chatError.textContent =
+            "";
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            chatCodeInput.focus();
+                chatCodeInput.focus();
 
-        }, 100);
+            },
+            100
+        );
 
     }
 );
@@ -339,7 +406,7 @@ closeChat.addEventListener(
 
 
 // =========================================
-// CORRECT CODE
+// CHAT CODE
 // =========================================
 
 function correctCode() {
@@ -368,30 +435,40 @@ function correctCode() {
 
     bgMusic.currentTime = 0;
 
+
     chatMusic.currentTime = 0;
 
-    chatMusic.play().catch(() => {
+    chatMusic
+        .play()
+        .catch(() => {
 
-        console.log(
-            "Browser blocked chat music autoplay."
-        );
+            console.log(
+                "Browser blocked chat music autoplay."
+            );
 
-    });
+        });
 
 
     chatNameModal.classList.remove(
         "hidden"
     );
 
-    chatNameInput.value = "";
 
-    chatNameError.textContent = "";
+    chatNameInput.value =
+        "";
 
-    setTimeout(() => {
+    chatNameError.textContent =
+        "";
 
-        chatNameInput.focus();
 
-    }, 100);
+    setTimeout(
+        () => {
+
+            chatNameInput.focus();
+
+        },
+        100
+    );
 }
 
 
@@ -406,7 +483,9 @@ chatCodeInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
+
             correctCode();
+
         }
 
     }
@@ -432,7 +511,8 @@ function enterChatWithName() {
     }
 
 
-    chatName = entered;
+    chatName =
+        entered;
 
 
     chatNameModal.classList.add(
@@ -453,11 +533,14 @@ function enterChatWithName() {
     startRealtimeChat();
 
 
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        messageInput.focus();
+            messageInput.focus();
 
-    }, 200);
+        },
+        200
+    );
 }
 
 
@@ -472,7 +555,9 @@ chatNameInput.addEventListener(
     event => {
 
         if (event.key === "Enter") {
+
             enterChatWithName();
+
         }
 
     }
@@ -488,7 +573,9 @@ backFromChat.addEventListener(
     async () => {
 
         if (voiceRecording) {
+
             await cancelVoiceRecording();
+
         }
 
 
@@ -503,40 +590,50 @@ backFromChat.addEventListener(
 
         chatMusic.pause();
 
-        chatMusic.currentTime = 0;
+        chatMusic.currentTime =
+            0;
 
-        bgMusic.currentTime = 0;
+        chatMusicWasPlaying =
+            false;
 
-        bgMusic.play().catch(() => {});
+
+        bgMusic.currentTime =
+            0;
+
+        bgMusic
+            .play()
+            .catch(() => {});
 
     }
 );
 
 
 // =========================================
-// LOAD OLD MESSAGES
+// LOAD MESSAGES
 // =========================================
 
 async function loadMessages() {
 
-    messagesBox.innerHTML = "";
+    messagesBox.innerHTML =
+        "";
 
 
     const {
         data,
         error
-    } = await supabaseClient
+    } =
+        await supabaseClient
 
-        .from("messages")
+            .from("messages")
 
-        .select("*")
+            .select("*")
 
-        .order(
-            "created_at",
-            {
-                ascending: true
-            }
-        );
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
 
 
     if (error) {
@@ -550,7 +647,9 @@ async function loadMessages() {
     }
 
 
-    for (const message of data) {
+    for (
+        const message of data
+    ) {
 
         await displayMessage(
             message
@@ -567,28 +666,34 @@ async function loadMessages() {
 // DISPLAY MESSAGE
 // =========================================
 
-async function displayMessage(message) {
-
-    // Prevent accidental duplicate realtime cards
+async function displayMessage(
+    message
+) {
 
     const existing =
         document.querySelector(
             `[data-message-id="${message.id}"]`
         );
 
+
     if (existing) {
+
         return;
+
     }
 
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     div.className =
         "message " +
         (
-            message.sender_name === chatName
+            message.sender_name ===
+            chatName
                 ? "mine"
                 : ""
         );
@@ -604,8 +709,11 @@ async function displayMessage(message) {
         ).toLocaleTimeString(
             [],
             {
-                hour: "2-digit",
-                minute: "2-digit"
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit"
             }
         );
 
@@ -616,15 +724,17 @@ async function displayMessage(message) {
         );
 
 
-    let contentHTML = "";
+    let contentHTML =
+        "";
 
 
     // =========================================
-    // IMAGE
+    // IMAGE MESSAGE
     // =========================================
 
     if (
-        message.message_type === "image" &&
+        message.message_type ===
+            "image" &&
         message.file_path
     ) {
 
@@ -633,15 +743,23 @@ async function displayMessage(message) {
             error
         } =
             await supabaseClient
+
                 .storage
-                .from("chat-images")
+
+                .from(
+                    "chat-images"
+                )
+
                 .createSignedUrl(
                     message.file_path,
                     3600
                 );
 
 
-        if (!error && data) {
+        if (
+            !error &&
+            data
+        ) {
 
             contentHTML = `
 
@@ -650,10 +768,12 @@ async function displayMessage(message) {
                     class="message-image"
                     alt="Shared photo"
                     loading="lazy"
-                    onclick="window.open(
-                        this.src,
-                        '_blank'
-                    )"
+                    onclick="
+                        window.open(
+                            this.src,
+                            '_blank'
+                        )
+                    "
                 >
 
             `;
@@ -674,11 +794,12 @@ async function displayMessage(message) {
 
 
     // =========================================
-    // VOICE
+    // VOICE MESSAGE
     // =========================================
 
     else if (
-        message.message_type === "voice" &&
+        message.message_type ===
+            "voice" &&
         message.file_path
     ) {
 
@@ -687,15 +808,23 @@ async function displayMessage(message) {
             error
         } =
             await supabaseClient
+
                 .storage
-                .from("chat-voice")
+
+                .from(
+                    "chat-voice"
+                )
+
                 .createSignedUrl(
                     message.file_path,
                     3600
                 );
 
 
-        if (!error && data) {
+        if (
+            !error &&
+            data
+        ) {
 
             contentHTML = `
 
@@ -732,7 +861,7 @@ async function displayMessage(message) {
 
 
     // =========================================
-    // TEXT
+    // TEXT MESSAGE
     // =========================================
 
     else {
@@ -741,7 +870,8 @@ async function displayMessage(message) {
 
             <div class="message-text">
                 ${escapeHTML(
-                    message.message || ""
+                    message.message ||
+                    ""
                 )}
             </div>
 
@@ -770,12 +900,81 @@ async function displayMessage(message) {
     );
 
 
+    // =========================================
+    // VOICE PLAYER CONTROLS
+    // =========================================
+
+    const voiceAudio =
+        div.querySelector(
+            ".voice-audio"
+        );
+
+
+    if (voiceAudio) {
+
+        voiceAudio.addEventListener(
+            "play",
+            () => {
+
+                /*
+                    Kisi voice ko sunte hi
+                    song2.mp3 pause.
+                */
+
+                pauseChatMusicForVoice();
+
+            }
+        );
+
+
+        voiceAudio.addEventListener(
+            "pause",
+            () => {
+
+                /*
+                    Agar voice manually pause hui,
+                    music wapas chala do.
+
+                    Lekin agar voice end hui hai,
+                    ended event handle karega.
+                */
+
+                if (
+                    voiceAudio.currentTime <
+                    voiceAudio.duration
+                ) {
+
+                    resumeChatMusicAfterVoice();
+
+                }
+
+            }
+        );
+
+
+        voiceAudio.addEventListener(
+            "ended",
+            () => {
+
+                /*
+                    Voice complete.
+                    Music resume.
+                */
+
+                resumeChatMusicAfterVoice();
+
+            }
+        );
+
+    }
+
+
     scrollMessagesToBottom();
 }
 
 
 // =========================================
-// SEND TEXT
+// SEND TEXT MESSAGE
 // =========================================
 
 async function sendMessage() {
@@ -784,9 +983,18 @@ async function sendMessage() {
         messageInput.value.trim();
 
 
-    if (!text) return;
+    if (!text) {
 
-    if (!chatName) return;
+        return;
+
+    }
+
+
+    if (!chatName) {
+
+        return;
+
+    }
 
 
     sendMessageBtn.disabled =
@@ -836,7 +1044,8 @@ async function sendMessage() {
     }
 
 
-    messageInput.value = "";
+    messageInput.value =
+        "";
 
     messageInput.focus();
 }
@@ -860,6 +1069,7 @@ messageInput.addEventListener(
             event.preventDefault();
 
             sendMessage();
+
         }
 
     }
@@ -867,7 +1077,7 @@ messageInput.addEventListener(
 
 
 // =========================================
-// PHOTO SEND
+// PHOTO INPUT
 // =========================================
 
 photoInput.addEventListener(
@@ -878,7 +1088,11 @@ photoInput.addEventListener(
             event.target.files[0];
 
 
-        if (!file) return;
+        if (!file) {
+
+            return;
+
+        }
 
 
         if (
@@ -891,7 +1105,8 @@ photoInput.addEventListener(
                 "Sirf image select kar."
             );
 
-            photoInput.value = "";
+            photoInput.value =
+                "";
 
             return;
         }
@@ -906,7 +1121,8 @@ photoInput.addEventListener(
                 "Photo 5MB se chhoti honi chahiye."
             );
 
-            photoInput.value = "";
+            photoInput.value =
+                "";
 
             return;
         }
@@ -918,7 +1134,8 @@ photoInput.addEventListener(
                 "Pehle chat mein enter karo."
             );
 
-            photoInput.value = "";
+            photoInput.value =
+                "";
 
             return;
         }
@@ -926,7 +1143,9 @@ photoInput.addEventListener(
 
         try {
 
-            await sendPhoto(file);
+            await sendPhoto(
+                file
+            );
 
         } catch (error) {
 
@@ -942,16 +1161,19 @@ photoInput.addEventListener(
         }
 
 
-        photoInput.value = "";
+        photoInput.value =
+            "";
     }
 );
 
 
 // =========================================
-// UPLOAD PHOTO
+// SEND PHOTO
 // =========================================
 
-async function sendPhoto(file) {
+async function sendPhoto(
+    file
+) {
 
     const extension =
         file.name
@@ -979,8 +1201,13 @@ async function sendPhoto(file) {
         error: uploadError
     } =
         await supabaseClient
+
             .storage
-            .from("chat-images")
+
+            .from(
+                "chat-images"
+            )
+
             .upload(
                 filePath,
                 file,
@@ -1045,7 +1272,7 @@ async function sendPhoto(file) {
 
 
 // =========================================
-// VOICE RECORDING
+// VOICE BUTTON
 // =========================================
 
 voiceRecordBtn.addEventListener(
@@ -1065,7 +1292,9 @@ voiceRecordBtn.addEventListener(
     () => {
 
         if (voiceRecording) {
+
             stopVoiceRecording();
+
         }
 
     }
@@ -1077,34 +1306,40 @@ voiceRecordBtn.addEventListener(
     () => {
 
         if (voiceRecording) {
+
             cancelVoiceRecording();
+
         }
 
     }
 );
 
 
-// Prevent double firing
-
 voiceRecordBtn.addEventListener(
     "contextmenu",
     event => {
+
         event.preventDefault();
+
     }
 );
 
 
 // =========================================
-// START RECORDING
+// START VOICE RECORDING
 // =========================================
 
-async function startVoiceRecording(event) {
+async function startVoiceRecording(
+    event
+) {
 
     event.preventDefault();
 
 
     if (voiceRecording) {
+
         return;
+
     }
 
 
@@ -1115,6 +1350,7 @@ async function startVoiceRecording(event) {
         );
 
         return;
+
     }
 
 
@@ -1128,15 +1364,27 @@ async function startVoiceRecording(event) {
         );
 
         return;
+
     }
+
+
+    /*
+        IMPORTANT:
+        Recording start hote hi
+        chat music pause.
+    */
+
+    pauseChatMusicForVoice();
 
 
     try {
 
         voiceStream =
-            await navigator.mediaDevices.getUserMedia({
-                audio: true
-            });
+            await navigator
+                .mediaDevices
+                .getUserMedia({
+                    audio: true
+                });
 
 
         let mimeType =
@@ -1173,9 +1421,11 @@ async function startVoiceRecording(event) {
             );
 
 
-        voiceChunks = [];
+        voiceChunks =
+            [];
 
-        voiceRecording = true;
+        voiceRecording =
+            true;
 
         voiceStartTime =
             Date.now();
@@ -1222,11 +1472,20 @@ async function startVoiceRecording(event) {
                 cleanupVoiceUI();
 
 
+                /*
+                    Recording stop hote hi
+                    music resume.
+                */
+
+                resumeChatMusicAfterVoice();
+
+
                 if (
                     blob.size === 0
                 ) {
 
                     return;
+
                 }
 
 
@@ -1289,18 +1548,22 @@ async function startVoiceRecording(event) {
         );
 
 
+        resumeChatMusicAfterVoice();
+
+
         alert(
             "Microphone permission allow karni padegi."
         );
 
 
         cleanupVoiceUI();
+
     }
 }
 
 
 // =========================================
-// STOP RECORDING
+// STOP VOICE RECORDING
 // =========================================
 
 async function stopVoiceRecording() {
@@ -1309,11 +1572,14 @@ async function stopVoiceRecording() {
         !voiceRecording ||
         !mediaRecorder
     ) {
+
         return;
+
     }
 
 
-    voiceRecording = false;
+    voiceRecording =
+        false;
 
 
     voiceStatusText.textContent =
@@ -1340,17 +1606,20 @@ async function stopVoiceRecording() {
 
 
 // =========================================
-// CANCEL RECORDING
+// CANCEL VOICE RECORDING
 // =========================================
 
 async function cancelVoiceRecording() {
 
     if (!voiceRecording) {
+
         return;
+
     }
 
 
-    voiceRecording = false;
+    voiceRecording =
+        false;
 
 
     if (
@@ -1370,12 +1639,22 @@ async function cancelVoiceRecording() {
     }
 
 
-    voiceChunks = [];
+    voiceChunks =
+        [];
 
 
     stopVoiceStream();
 
+
     cleanupVoiceUI();
+
+
+    /*
+        Cancel karne ke baad bhi
+        music resume hona chahiye.
+    */
+
+    resumeChatMusicAfterVoice();
 }
 
 
@@ -1389,7 +1668,9 @@ async function uploadVoice(
 ) {
 
     if (!chatName) {
+
         return;
+
     }
 
 
@@ -1403,6 +1684,7 @@ async function uploadVoice(
         );
 
         return;
+
     }
 
 
@@ -1427,6 +1709,7 @@ async function uploadVoice(
 
         extension =
             "ogg";
+
     }
 
 
@@ -1452,7 +1735,9 @@ async function uploadVoice(
 
             .storage
 
-            .from("chat-voice")
+            .from(
+                "chat-voice"
+            )
 
             .upload(
                 filePath,
@@ -1478,6 +1763,7 @@ async function uploadVoice(
         );
 
         throw uploadError;
+
     }
 
 
@@ -1513,17 +1799,21 @@ async function uploadVoice(
         );
 
 
-        // Remove orphaned file
-
         await supabaseClient
+
             .storage
-            .from("chat-voice")
+
+            .from(
+                "chat-voice"
+            )
+
             .remove([
                 filePath
             ]);
 
 
         throw dbError;
+
     }
 }
 
@@ -1535,7 +1825,9 @@ async function uploadVoice(
 function updateVoiceTimer() {
 
     if (!voiceStartTime) {
+
         return;
+
     }
 
 
@@ -1562,7 +1854,10 @@ function updateVoiceTimer() {
         minutes +
         ":" +
         String(seconds)
-            .padStart(2, "0");
+            .padStart(
+                2,
+                "0"
+            );
 }
 
 
@@ -1615,7 +1910,9 @@ function cleanupVoiceUI() {
 function stopVoiceStream() {
 
     if (!voiceStream) {
+
         return;
+
     }
 
 
@@ -1623,7 +1920,9 @@ function stopVoiceStream() {
         .getTracks()
         .forEach(
             track => {
+
                 track.stop();
+
             }
         );
 
@@ -1640,7 +1939,9 @@ function stopVoiceStream() {
 function startRealtimeChat() {
 
     if (chatChannel) {
+
         return;
+
     }
 
 
@@ -1704,7 +2005,9 @@ function startRealtimeChat() {
 async function updateLastSeen() {
 
     if (!currentUser) {
+
         return;
+
     }
 
 
@@ -1807,14 +2110,17 @@ async function loadGallery() {
     } =
         await supabaseClient
 
-            .from("gallery_photos")
+            .from(
+                "gallery_photos"
+            )
 
             .select("*")
 
             .order(
                 "created_at",
                 {
-                    ascending: false
+                    ascending:
+                        false
                 }
             );
 
@@ -1839,10 +2145,14 @@ async function loadGallery() {
     }
 
 
-    galleryGrid.innerHTML = "";
+    galleryGrid.innerHTML =
+        "";
 
 
-    if (!data || data.length === 0) {
+    if (
+        !data ||
+        data.length === 0
+    ) {
 
         galleryGrid.innerHTML = `
 
@@ -1856,7 +2166,9 @@ async function loadGallery() {
     }
 
 
-    for (const photo of data) {
+    for (
+        const photo of data
+    ) {
 
         await displayGalleryPhoto(
             photo
@@ -1881,7 +2193,9 @@ async function displayGalleryPhoto(
 
 
     if (existing) {
+
         return;
+
     }
 
 
@@ -1893,7 +2207,9 @@ async function displayGalleryPhoto(
 
             .storage
 
-            .from("prsn-gallery")
+            .from(
+                "prsn-gallery"
+            )
 
             .createSignedUrl(
                 photo.image_path,
@@ -2016,7 +2332,9 @@ galleryInput.addEventListener(
 
 
         if (!file) {
+
             return;
+
         }
 
 
@@ -2098,14 +2416,12 @@ galleryInput.addEventListener(
 
             await loadGallery();
 
-
         } catch (error) {
 
             console.error(
                 "Gallery upload error:",
                 error
             );
-
 
             alert(
                 "Photo upload nahi hui."
@@ -2124,6 +2440,7 @@ galleryInput.addEventListener(
 
         galleryInput.value =
             "";
+
     }
 );
 
@@ -2165,7 +2482,9 @@ async function uploadGalleryPhoto(
 
             .storage
 
-            .from("prsn-gallery")
+            .from(
+                "prsn-gallery"
+            )
 
             .upload(
                 filePath,
@@ -2186,6 +2505,7 @@ async function uploadGalleryPhoto(
     if (uploadError) {
 
         throw uploadError;
+
     }
 
 
@@ -2194,7 +2514,9 @@ async function uploadGalleryPhoto(
     } =
         await supabaseClient
 
-            .from("gallery_photos")
+            .from(
+                "gallery_photos"
+            )
 
             .insert({
 
@@ -2213,14 +2535,20 @@ async function uploadGalleryPhoto(
     if (dbError) {
 
         await supabaseClient
+
             .storage
-            .from("prsn-gallery")
+
+            .from(
+                "prsn-gallery"
+            )
+
             .remove([
                 filePath
             ]);
 
 
         throw dbError;
+
     }
 }
 
@@ -2232,7 +2560,9 @@ async function uploadGalleryPhoto(
 function startRealtimeGallery() {
 
     if (galleryChannel) {
+
         return;
+
     }
 
 
@@ -2263,12 +2593,15 @@ function startRealtimeGallery() {
                 async payload => {
 
                     if (
-                        galleryScreen.classList.contains(
-                            "hidden"
-                        )
+                        galleryScreen
+                            .classList
+                            .contains(
+                                "hidden"
+                            )
                     ) {
 
                         return;
+
                     }
 
 
@@ -2294,7 +2627,7 @@ function startRealtimeGallery() {
 
 
 // =========================================
-// SCROLL
+// SCROLL CHAT
 // =========================================
 
 function scrollMessagesToBottom() {
@@ -2313,22 +2646,27 @@ function escapeHTML(
 ) {
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
