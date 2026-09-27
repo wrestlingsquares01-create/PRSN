@@ -1,0 +1,583 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: #050505;
+    color: white;
+    font-family: Inter, Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+
+/* BACKGROUND */
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: .18;
+}
+
+.orb1 {
+    width: 450px;
+    height: 450px;
+    background: #ffffff;
+    top: -200px;
+    left: -150px;
+}
+
+.orb2 {
+    width: 400px;
+    height: 400px;
+    background: #777;
+    right: -150px;
+    bottom: -150px;
+}
+
+.grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 45px 45px;
+}
+
+
+/* LOGIN */
+
+.login-screen {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 45px;
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    background: rgba(255,255,255,.045);
+
+    backdrop-filter: blur(25px);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.6);
+}
+
+.mini-logo {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -3px;
+}
+
+.admin-label {
+    margin-top: 8px;
+
+    font-size: 10px;
+    letter-spacing: 4px;
+
+    opacity: .4;
+}
+
+.login-card h1 {
+    margin-top: 35px;
+
+    font-size: 32px;
+}
+
+.login-card p {
+    margin-top: 7px;
+
+    color: rgba(255,255,255,.4);
+}
+
+.login-card input {
+    width: 100%;
+
+    height: 52px;
+
+    margin-top: 15px;
+
+    padding: 0 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    outline: none;
+
+    background: rgba(255,255,255,.06);
+
+    color: white;
+
+    font-size: 14px;
+}
+
+.login-card input:focus {
+    border-color: rgba(255,255,255,.4);
+}
+
+.login-card button {
+    width: 100%;
+
+    height: 52px;
+
+    margin-top: 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: black;
+
+    font-weight: 900;
+
+    cursor: pointer;
+}
+
+.error {
+    margin-top: 14px;
+
+    min-height: 18px;
+
+    color: #ff7777;
+
+    font-size: 12px;
+}
+
+
+/* DASHBOARD */
+
+.hidden {
+    display: none !important;
+}
+
+.admin-panel {
+    min-height: 100vh;
+}
+
+.topbar {
+    height: 80px;
+
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.08);
+
+    background:
+        rgba(0,0,0,.45);
+
+    backdrop-filter: blur(20px);
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.brand-sub {
+    margin-top: 2px;
+
+    font-size: 8px;
+    letter-spacing: 3px;
+
+    opacity: .35;
+}
+
+.logout-btn,
+#refreshBtn {
+    border: 1px solid rgba(255,255,255,.1);
+
+    background: rgba(255,255,255,.05);
+
+    color: white;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.logout-btn:hover,
+#refreshBtn:hover {
+    background: rgba(255,255,255,.12);
+}
+
+
+/* CONTENT */
+
+.dashboard {
+    width: min(1200px, 90%);
+
+    margin: auto;
+
+    padding: 55px 0;
+}
+
+.welcome span {
+    font-size: 9px;
+
+    letter-spacing: 4px;
+
+    opacity: .35;
+}
+
+.welcome h1 {
+    margin-top: 8px;
+
+    font-size: 42px;
+
+    letter-spacing: -2px;
+}
+
+
+/* STATS */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-top: 35px;
+}
+
+.stat-card {
+    min-height: 150px;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    backdrop-filter: blur(20px);
+}
+
+.stat-card span {
+    font-size: 22px;
+}
+
+.stat-card small {
+    display: block;
+
+    margin-top: 22px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    opacity: .35;
+}
+
+.stat-card strong {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 30px;
+}
+
+
+/* PANELS */
+
+.panel-card {
+    margin-top: 20px;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    backdrop-filter: blur(20px);
+}
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.section-title small {
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    opacity: .3;
+}
+
+.section-title h2 {
+    margin-top: 5px;
+
+    font-size: 20px;
+}
+
+
+/* MEMBERS */
+
+.members-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+.member {
+    padding: 18px;
+
+    border-radius: 14px;
+
+    background: rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.06);
+}
+
+.member-name {
+    font-weight: 800;
+}
+
+.member-status {
+    margin-top: 8px;
+
+    font-size: 10px;
+
+    opacity: .45;
+}
+
+.online-dot {
+    display: inline-block;
+
+    width: 7px;
+    height: 7px;
+
+    margin-right: 5px;
+
+    border-radius: 50%;
+
+    background: #fff;
+}
+
+
+/* MESSAGES */
+
+.messages-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    max-height: 450px;
+
+    overflow-y: auto;
+}
+
+.admin-message {
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,.04);
+
+    border:
+        1px solid rgba(255,255,255,.05);
+}
+
+.admin-message-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.sender {
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.message-date {
+    font-size: 9px;
+
+    opacity: .3;
+}
+
+.admin-message-body {
+    margin-top: 8px;
+
+    font-size: 13px;
+
+    opacity: .75;
+
+    word-break: break-word;
+}
+
+
+/* GALLERY */
+
+.gallery-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+.gallery-item {
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: rgba(255,255,255,.04);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+}
+
+.gallery-item img {
+    width: 100%;
+
+    height: 180px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.gallery-info {
+    padding: 12px;
+
+    font-size: 10px;
+
+    opacity: .5;
+}
+
+
+/* EMPTY */
+
+.empty {
+    padding: 30px;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    opacity: .3;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .members-list {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .gallery-list {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .welcome h1 {
+        font-size: 32px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .login-card {
+        padding: 30px 22px;
+    }
+
+    .dashboard {
+        width: 92%;
+        padding-top: 35px;
+    }
+
+    .stats-grid {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+
+    .members-list {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .gallery-item img {
+        height: 130px;
+    }
+}
