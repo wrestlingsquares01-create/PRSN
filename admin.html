@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050506">
+    <title>PRSN — Admin Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="background" aria-hidden="true">
+    <div class="noise"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grid"></div>
+    <div class="beam"></div>
+</div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<section id="loginScreen" class="login-screen">
+    <div class="login-shell">
+        <div class="login-side">
+            <div class="eyebrow">PRIVATE SYSTEM • PRSN</div>
+            <div class="display-mark">P</div>
+            <h2>Control the room.<br>See the signal.</h2>
+            <p>A private console for community activity, media and realtime presence.</p>
+            <div class="login-meta">
+                <span><i></i> Encrypted transport</span>
+                <span><i></i> Supabase realtime</span>
+            </div>
+        </div>
+
+        <div class="login-card glass-panel">
+            <div class="mini-logo">PRSN</div>
+            <div class="admin-label">ADMIN ACCESS</div>
+            <h1>Welcome Back</h1>
+            <p>Authenticate to enter the private control layer.</p>
+
+            <label class="field-label" for="adminUsername">USERNAME</label>
+            <div class="field-wrap">
+                <span class="field-icon">01</span>
+                <input type="text" id="adminUsername" placeholder="Admin username" autocomplete="off">
+            </div>
+
+            <label class="field-label" for="adminPassword">PASSWORD</label>
+            <div class="field-wrap">
+                <span class="field-icon">02</span>
+                <input type="password" id="adminPassword" placeholder="Admin password">
+            </div>
+
+            <button id="loginBtn"><span>ENTER ADMIN</span><b>↗</b></button>
+            <div id="loginError" class="error"></div>
+            <div class="access-note">AUTHORIZED ACCESS ONLY</div>
+        </div>
+    </div>
+</section>
+
+<section id="adminPanel" class="admin-panel hidden">
+    <header class="topbar">
+        <div class="brand-wrap">
+            <div class="brand-badge">P</div>
+            <div>
+                <div class="brand">PRSN</div>
+                <div class="brand-sub">ADMIN CONTROL</div>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <div class="live-pill"><span></span> SYSTEM LIVE</div>
+            <button id="logoutBtn" class="logout-btn">LOGOUT <b>↗</b></button>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <section class="hero-row">
+            <div class="welcome">
+                <span>CONTROL CENTER / 01</span>
+                <h1>PRSN <em>ADMIN</em></h1>
+                <p>Realtime overview of your private community.</p>
+            </div>
+            <div class="hero-orbit" aria-hidden="true">
+                <div class="ring ring-a"></div>
+                <div class="ring ring-b"></div>
+                <div class="core">P</div>
+            </div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card" data-tilt>
+                <div class="stat-top"><span class="stat-index">01</span><span class="stat-icon">◎</span></div>
+                <small>MEMBERS</small>
+                <strong id="memberCount">0</strong>
+                <div class="stat-line"></div>
+            </div>
+            <div class="stat-card" data-tilt>
+                <div class="stat-top"><span class="stat-index">02</span><span class="stat-icon">◇</span></div>
+                <small>MESSAGES</small>
+                <strong id="messageCount">0</strong>
+                <div class="stat-line"></div>
+            </div>
+            <div class="stat-card" data-tilt>
+                <div class="stat-top"><span class="stat-index">03</span><span class="stat-icon">▣</span></div>
+                <small>PHOTOS</small>
+                <strong id="photoCount">0</strong>
+                <div class="stat-line"></div>
+            </div>
+            <div class="stat-card" data-tilt>
+                <div class="stat-top"><span class="stat-index">04</span><span class="stat-icon">◉</span></div>
+                <small>VOICES</small>
+                <strong id="voiceCount">0</strong>
+                <div class="stat-line"></div>
+            </div>
+        </div>
+
+        <section class="panel-card members-panel">
+            <div class="section-title">
+                <div><small>COMMUNITY / 02</small><h2>Members</h2><p>Presence and last activity.</p></div>
+                <button id="refreshBtn">↻ <span>REFRESH DATA</span></button>
+            </div>
+            <div id="membersList" class="members-list"></div>
+        </section>
+
+        <section class="panel-card messages-panel">
+            <div class="section-title">
+                <div><small>CHAT / 03</small><h2>Recent Messages</h2><p>Latest transmissions across the room.</p></div>
+                <div class="section-mark">LIVE FEED</div>
+            </div>
+            <div id="messagesList" class="messages-list"></div>
+        </section>
+
+        <section class="panel-card gallery-panel">
+            <div class="section-title">
+                <div><small>MEDIA / 04</small><h2>Amazing Wall</h2><p>Recent memories uploaded by the community.</p></div>
+                <div class="section-mark">VISUAL ARCHIVE</div>
+            </div>
+            <div id="galleryList" class="gallery-list"></div>
+        </section>
+
+        <footer class="admin-footer"><span>PRSN PRIVATE NETWORK</span><span>CONTROL LAYER // 2026</span></footer>
+    </main>
+</section>
+<script src="admin.js"></script>
+</body>
+</html>
