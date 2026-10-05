@@ -1,6 +1,9 @@
-// =========================================
+// ============================================================
 // PRSN ADMIN
-// =========================================
+// ============================================================
+
+
+// -------------------- SUPABASE --------------------
 
 const SUPABASE_URL =
     "https://xvvtzhqyihwgjdzdqkvx.supabase.co";
@@ -15,59 +18,75 @@ const supabaseClient =
     );
 
 
-// =========================================
-// ADMIN CREDENTIAL
-// =========================================
+// ============================================================
+// ADMIN LOGIN
+// NOTE: Frontend credentials can be inspected.
+// Supabase Auth should eventually replace this.
+// ============================================================
 
-// IMPORTANT:
-// Ye temporary frontend gate hai.
-// Real Supabase Auth hum next security step mein add karenge.
+const ADMIN_USERNAME =
+    "PRSN_ADMIN";
 
-const ADMIN_USERNAME = "PRSN_ADMIN";
-const ADMIN_PASSWORD = "BACHYO_ADMIN";
+const ADMIN_PASSWORD =
+    "BACHYO_ADMIN";
 
 
-// =========================================
-// ELEMENTS
-// =========================================
+// -------------------- ELEMENTS --------------------
 
 const loginScreen =
-    document.getElementById("loginScreen");
+    document.getElementById(
+        "loginScreen"
+    );
 
 const adminPanel =
-    document.getElementById("adminPanel");
+    document.getElementById(
+        "adminPanel"
+    );
 
 const adminUsername =
-    document.getElementById("adminUsername");
+    document.getElementById(
+        "adminUsername"
+    );
 
 const adminPassword =
-    document.getElementById("adminPassword");
+    document.getElementById(
+        "adminPassword"
+    );
 
 const loginBtn =
-    document.getElementById("loginBtn");
+    document.getElementById(
+        "loginBtn"
+    );
 
 const loginError =
-    document.getElementById("loginError");
+    document.getElementById(
+        "loginError"
+    );
 
 const logoutBtn =
-    document.getElementById("logoutBtn");
+    document.getElementById(
+        "logoutBtn"
+    );
 
 const refreshBtn =
-    document.getElementById("refreshBtn");
+    document.getElementById(
+        "refreshBtn"
+    );
 
 
-// =========================================
+// ============================================================
 // LOGIN
-// =========================================
+// ============================================================
 
 function login() {
 
     const username =
-        adminUsername.value
-            .trim();
+        adminUsername.value.trim();
 
     const password =
         adminPassword.value;
+
+    loginError.textContent = "";
 
     if (
         username !== ADMIN_USERNAME ||
@@ -80,7 +99,6 @@ function login() {
         return;
     }
 
-
     sessionStorage.setItem(
         "prsn_admin",
         "true"
@@ -90,9 +108,9 @@ function login() {
 }
 
 
-// =========================================
+// ============================================================
 // SHOW DASHBOARD
-// =========================================
+// ============================================================
 
 function showDashboard() {
 
@@ -108,9 +126,9 @@ function showDashboard() {
 }
 
 
-// =========================================
+// ============================================================
 // LOGOUT
-// =========================================
+// ============================================================
 
 logoutBtn.addEventListener(
     "click",
@@ -130,14 +148,15 @@ logoutBtn.addEventListener(
 
         adminUsername.value = "";
         adminPassword.value = "";
+        loginError.textContent = "";
 
     }
 );
 
 
-// =========================================
+// ============================================================
 // LOGIN EVENTS
-// =========================================
+// ============================================================
 
 loginBtn.addEventListener(
     "click",
@@ -157,40 +176,61 @@ adminPassword.addEventListener(
 );
 
 
-// =========================================
+adminUsername.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+            adminPassword.focus();
+        }
+
+    }
+);
+
+
+// ============================================================
 // DASHBOARD
-// =========================================
+// ============================================================
 
 async function loadDashboard() {
 
-    await Promise.all([
-        loadMembers(),
-        loadMessages(),
-        loadGallery()
-    ]);
+    refreshBtn.disabled = true;
 
+    try {
+
+        await Promise.all([
+            loadMembers(),
+            loadMessages(),
+            loadGallery()
+        ]);
+
+    } finally {
+
+        refreshBtn.disabled = false;
+
+    }
 }
 
 
-// =========================================
+// ============================================================
 // MEMBERS
-// =========================================
+// ============================================================
 
 async function loadMembers() {
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from("members")
-        .select("*")
-        .order(
-            "name",
-            {
-                ascending: true
-            }
-        );
-
+    } =
+        await supabaseClient
+            .from("members")
+            .select("*")
+            .order(
+                "name",
+                {
+                    ascending: true
+                }
+            );
 
     if (error) {
 
@@ -202,85 +242,108 @@ async function loadMembers() {
         return;
     }
 
-
-    document.getElementById(
-        "memberCount"
-    ).textContent =
-        data.length;
-
+    const memberCount =
+        document.getElementById(
+            "memberCount"
+        );
 
     const box =
         document.getElementById(
             "membersList"
         );
 
+    memberCount.textContent =
+        data.length;
 
     if (!data.length) {
 
-        box.innerHTML =
-            `<div class="empty">
+        box.innerHTML = `
+            <div class="empty">
                 No members found.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
 
-
     box.innerHTML =
-        data.map(member => {
+        data
+            .map(member => {
 
-            const lastSeen =
-                member.last_seen_at
-                    ? formatDate(
-                        member.last_seen_at
-                    )
-                    : "Never";
+                const lastSeen =
+                    member.last_seen_at
+                        ? formatDate(
+                            member.last_seen_at
+                        )
+                        : "Never";
 
+                const recentlyOnline =
+                    member.last_seen_at
+                        ? (
+                            Date.now() -
+                            new Date(
+                                member.last_seen_at
+                            ).getTime()
+                        ) <
+                        120000
+                        : false;
 
-            return `
-                <div class="member">
+                return `
 
-                    <div class="member-name">
-                        ${escapeHTML(member.name)}
+                    <div class="member">
+
+                        <div class="member-name">
+                            ${escapeHTML(
+                                member.name
+                            )}
+                        </div>
+
+                        <div class="member-status">
+
+                            <span
+                                class="online-dot ${
+                                    recentlyOnline
+                                        ? "is-online"
+                                        : ""
+                                }"
+                            ></span>
+
+                            ${
+                                recentlyOnline
+                                    ? "Active now"
+                                    : `Last seen: ${lastSeen}`
+                            }
+
+                        </div>
+
                     </div>
+                `;
 
-                    <div class="member-status">
-
-                        <span class="online-dot"></span>
-
-                        Last seen:
-                        ${lastSeen}
-
-                    </div>
-
-                </div>
-            `;
-
-        }).join("");
-
+            })
+            .join("");
 }
 
 
-// =========================================
+// ============================================================
 // MESSAGES
-// =========================================
+// ============================================================
 
 async function loadMessages() {
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from("messages")
-        .select("*")
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
-        )
-        .limit(100);
-
+    } =
+        await supabaseClient
+            .from("messages")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(100);
 
     if (error) {
 
@@ -291,7 +354,6 @@ async function loadMessages() {
 
         return;
     }
-
 
     document.getElementById(
         "messageCount"
@@ -335,89 +397,114 @@ async function loadMessages() {
 
     if (!data.length) {
 
-        box.innerHTML =
-            `<div class="empty">
+        box.innerHTML = `
+            <div class="empty">
                 No messages yet.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
 
 
     box.innerHTML =
-        data.map(message => {
+        data
+            .map(message => {
 
-            let body =
-                message.message || "";
+                let body =
+                    message.message || "";
 
-
-            if (
-                message.message_type ===
-                "image"
-            ) {
-                body = "📷 Photo";
-            }
+                let typeIcon = "✦";
 
 
-            if (
-                message.message_type ===
-                "voice"
-            ) {
-                body = "🎙️ Voice message";
-            }
+                if (
+                    message.message_type ===
+                    "image"
+                ) {
+
+                    body = "Photo";
+                    typeIcon = "◫";
+                }
 
 
-            return `
-                <div class="admin-message">
+                if (
+                    message.message_type ===
+                    "voice"
+                ) {
 
-                    <div class="admin-message-top">
+                    body =
+                        "Voice message";
 
-                        <span class="sender">
-                            ${escapeHTML(
-                                message.sender_name
-                            )}
-                        </span>
+                    typeIcon = "◉";
+                }
 
-                        <span class="message-date">
-                            ${formatDate(
-                                message.created_at
-                            )}
-                        </span>
+
+                return `
+
+                    <div class="admin-message">
+
+                        <div
+                            class="admin-message-top"
+                        >
+
+                            <span class="sender">
+
+                                <span
+                                    class="message-type-icon"
+                                >
+                                    ${typeIcon}
+                                </span>
+
+                                ${escapeHTML(
+                                    message.sender_name
+                                )}
+
+                            </span>
+
+                            <span
+                                class="message-date"
+                            >
+                                ${formatDate(
+                                    message.created_at
+                                )}
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="admin-message-body"
+                        >
+                            ${escapeHTML(body)}
+                        </div>
 
                     </div>
+                `;
 
-                    <div class="admin-message-body">
-                        ${escapeHTML(body)}
-                    </div>
-
-                </div>
-            `;
-
-        }).join("");
-
+            })
+            .join("");
 }
 
 
-// =========================================
+// ============================================================
 // GALLERY
-// =========================================
+// ============================================================
 
 async function loadGallery() {
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from("gallery_photos")
-        .select("*")
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
-        )
-        .limit(100);
-
+    } =
+        await supabaseClient
+            .from("gallery_photos")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(100);
 
     if (error) {
 
@@ -429,7 +516,6 @@ async function loadGallery() {
         return;
     }
 
-
     const box =
         document.getElementById(
             "galleryList"
@@ -438,10 +524,11 @@ async function loadGallery() {
 
     if (!data.length) {
 
-        box.innerHTML =
-            `<div class="empty">
+        box.innerHTML = `
+            <div class="empty">
                 No gallery photos yet.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
@@ -450,75 +537,93 @@ async function loadGallery() {
     box.innerHTML = "";
 
 
-    for (const photo of data) {
+    const cards =
+        await Promise.all(
 
-        let imageURL = null;
+            data.map(
+                async photo => {
 
-
-        const {
-            data: signed,
-            error: signedError
-        } = await supabaseClient
-            .storage
-            .from("prsn-gallery")
-            .createSignedUrl(
-                photo.image_path,
-                3600
-            );
-
-
-        if (
-            !signedError &&
-            signed
-        ) {
-            imageURL =
-                signed.signedUrl;
-        }
+                    const {
+                        data: signed,
+                        error:
+                            signedError
+                    } =
+                        await supabaseClient
+                            .storage
+                            .from(
+                                "prsn-gallery"
+                            )
+                            .createSignedUrl(
+                                photo.image_path,
+                                3600
+                            );
 
 
-        box.innerHTML += `
-            <div class="gallery-item">
+                    const imageURL =
+                        (
+                            !signedError &&
+                            signed
+                        )
+                            ? signed.signedUrl
+                            : null;
 
-                ${
-                    imageURL
-                        ? `
-                            <img
-                                src="${imageURL}"
-                                alt="Gallery photo"
-                                loading="lazy"
+
+                    return `
+
+                        <div class="gallery-item">
+
+                            ${
+                                imageURL
+                                    ? `
+                                        <img
+                                            src="${imageURL}"
+                                            alt="Gallery photo"
+                                            loading="lazy"
+                                        >
+                                    `
+                                    : `
+                                        <div
+                                            class="empty"
+                                        >
+                                            Image unavailable
+                                        </div>
+                                    `
+                            }
+
+                            <div
+                                class="gallery-info"
                             >
-                        `
-                        : `
-                            <div class="empty">
-                                Image unavailable
+
+                                <span>
+                                    ${escapeHTML(
+                                        photo.uploader_name
+                                    )}
+                                </span>
+
+                                <span>
+                                    ${formatDate(
+                                        photo.created_at
+                                    )}
+                                </span>
+
                             </div>
-                        `
+
+                        </div>
+                    `;
+
                 }
+            )
+        );
 
-                <div class="gallery-info">
 
-                    ${escapeHTML(
-                        photo.uploader_name
-                    )}
-
-                    ·
-
-                    ${formatDate(
-                        photo.created_at
-                    )}
-
-                </div>
-
-            </div>
-        `;
-    }
-
+    box.innerHTML =
+        cards.join("");
 }
 
 
-// =========================================
+// ============================================================
 // REFRESH
-// =========================================
+// ============================================================
 
 refreshBtn.addEventListener(
     "click",
@@ -526,22 +631,31 @@ refreshBtn.addEventListener(
 );
 
 
-// =========================================
+// ============================================================
 // HELPERS
-// =========================================
+// ============================================================
 
 function formatDate(date) {
 
-    if (!date) return "Never";
+    if (!date) {
+        return "Never";
+    }
 
     return new Date(date)
         .toLocaleString(
             [],
             {
-                day: "2-digit",
-                month: "short",
-                hour: "2-digit",
-                minute: "2-digit"
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit"
             }
         );
 }
@@ -561,9 +675,9 @@ function escapeHTML(value) {
 }
 
 
-// =========================================
-// AUTO LOGIN CHECK
-// =========================================
+// ============================================================
+// AUTO LOGIN
+// ============================================================
 
 if (
     sessionStorage.getItem(
@@ -572,5 +686,205 @@ if (
 ) {
 
     showDashboard();
-
 }
+
+
+// ============================================================
+// PREMIUM ADMIN EFFECTS
+// ============================================================
+
+(function initAdminPremiumUI() {
+
+    const glow =
+        document.getElementById(
+            "cursorGlow"
+        );
+
+    const reduceMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+    // ---------------- CURSOR GLOW ----------------
+
+    if (
+        glow &&
+        !reduceMotion
+    ) {
+
+        window.addEventListener(
+            "pointermove",
+            event => {
+
+                glow.style.left =
+                    `${event.clientX}px`;
+
+                glow.style.top =
+                    `${event.clientY}px`;
+
+                glow.style.opacity =
+                    "1";
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        document
+            .documentElement
+            .addEventListener(
+                "mouseleave",
+                () => {
+
+                    glow.style.opacity =
+                        "0";
+
+                }
+            );
+    }
+
+
+    // ---------------- 3D CARDS ----------------
+
+    document
+        .querySelectorAll(
+            "[data-tilt]"
+        )
+        .forEach(card => {
+
+            card.addEventListener(
+                "pointermove",
+                event => {
+
+                    if (
+                        reduceMotion ||
+                        event.pointerType !==
+                            "mouse"
+                    ) {
+                        return;
+                    }
+
+                    const rect =
+                        card
+                            .getBoundingClientRect();
+
+                    const rx =
+                        -(
+                            (
+                                event.clientY -
+                                rect.top
+                            ) /
+                            rect.height -
+                            0.5
+                        ) *
+                        3;
+
+                    const ry =
+                        (
+                            (
+                                event.clientX -
+                                rect.left
+                            ) /
+                            rect.width -
+                            0.5
+                        ) *
+                        3;
+
+                    card.style.transform =
+                        `translateY(-5px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+
+                }
+            );
+
+
+            card.addEventListener(
+                "pointerleave",
+                () => {
+
+                    card.style
+                        .removeProperty(
+                            "transform"
+                        );
+
+                }
+            );
+
+        });
+
+
+    // ---------------- NUMBER ANIMATION ----------------
+
+    [
+        "memberCount",
+        "messageCount",
+        "photoCount",
+        "voiceCount"
+    ].forEach(id => {
+
+        const element =
+            document.getElementById(id);
+
+        if (!element) return;
+
+
+        const observer =
+            new MutationObserver(
+                () => {
+
+                    if (
+                        typeof element.animate !==
+                        "function"
+                    ) {
+                        return;
+                    }
+
+                    element.animate(
+                        [
+                            {
+                                opacity:
+                                    0.25,
+
+                                transform:
+                                    "translateY(5px)"
+                            },
+                            {
+                                opacity:
+                                    1,
+
+                                transform:
+                                    "translateY(0)"
+                            }
+                        ],
+                        {
+                            duration:
+                                320,
+
+                            easing:
+                                "cubic-bezier(.2,.8,.2,1)"
+                        }
+                    );
+
+                }
+            );
+
+
+        observer.observe(
+            element,
+            {
+                childList:
+                    true,
+
+                characterData:
+                    true,
+
+                subtree:
+                    true
+            }
+        );
+
+    });
+
+})();
