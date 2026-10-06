@@ -2,476 +2,2783 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
-    <title>PRSN</title>
+    <meta
+        name="theme-color"
+        content="#070305"
+    >
+
+    <meta
+        name="description"
+        content="PRSN — Our private digital journey."
+    >
+
+    <title>PRSN — The Journey</title>
+
+
+    <!-- FONTS -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- MAIN CSS -->
 
     <link
         rel="stylesheet"
         href="style.css"
     >
+
+
+    <!-- THREE.JS -->
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three":
+                "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+
+            "three/addons/":
+                "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+    }
+    </script>
+
 </head>
+
 
 <body>
 
-    <!-- ========================================= -->
-    <!-- BACKGROUND -->
-    <!-- ========================================= -->
 
-    <div class="background">
+<!-- =========================================================
+     GLOBAL CURSOR LIGHT
+========================================================= -->
 
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+<div
+    id="cursorGlow"
+    class="cursor-glow"
+></div>
 
-        <div class="grid"></div>
+
+
+<!-- =========================================================
+     3D CINEMATIC TRAIN INTRO
+========================================================= -->
+
+<section
+    id="introScreen"
+    class="cinematic-intro"
+>
+
+
+    <canvas
+        id="threeCanvas"
+        class="three-canvas"
+        aria-label="PRSN cinematic train journey"
+    ></canvas>
+
+
+    <!-- CINEMATIC OVERLAYS -->
+
+    <div class="cinema-overlay">
+
+        <div class="film-grain"></div>
+
+        <div class="cinema-vignette"></div>
+
+        <div class="cinema-letterbox cinema-top"></div>
+
+        <div class="cinema-letterbox cinema-bottom"></div>
+
+        <div class="intro-gradient"></div>
 
     </div>
 
 
-    <!-- ========================================= -->
-    <!-- MUSIC -->
-    <!-- ========================================= -->
 
-    <audio
-        id="bgMusic"
-        loop
-    >
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
+    <!-- TOP HUD -->
+
+    <header class="intro-hud">
 
 
-    <audio
-        id="chatMusic"
-        loop
-    >
-        <source src="song3.mp3.mp3" type="audio/mpeg">
-         <source src="song2.mp3" type="audio/mpeg">
-    </audio>
+        <div class="intro-brand">
 
-
-    <!-- ========================================= -->
-    <!-- NAME SCREEN -->
-    <!-- ========================================= -->
-
-    <section
-        id="nameScreen"
-        class="screen active"
-    >
-
-        <div class="login-card glass-card">
-
-            <div class="logo">
-                PRSN
+            <div class="intro-brand-mark">
+                P
             </div>
 
-            <div class="tagline">
-                PRIVATE • PERSONAL • OURS
+            <div class="intro-brand-copy">
+
+                <strong>
+                    PRSN
+                </strong>
+
+                <span>
+                    THE OG JOURNEY
+                </span>
+
             </div>
 
-            <div class="divider"></div>
+        </div>
 
-            <h1>
-                Welcome
-            </h1>
 
-            <p class="muted">
-                Enter your name to enter PRSN.
-            </p>
 
-            <input
-                type="text"
-                id="nameInput"
-                placeholder="Your name"
-                autocomplete="off"
-            >
+        <div class="intro-hud-center">
 
-            <button
-                id="enterBtn"
-                class="primary-btn"
-            >
-                ENTER PRSN
-            </button>
+            <span>SHYAM</span>
+
+            <i></i>
+
+            <span>RAVI</span>
+
+            <i></i>
+
+            <span>PRASHANT</span>
+
+            <i></i>
+
+            <span>NUKS</span>
+
+        </div>
+
+
+
+        <div class="intro-system">
+
+            <span class="system-dot"></span>
+
+            <span>
+                JOURNEY READY
+            </span>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- INTRO HERO -->
+
+    <div
+        id="introHero"
+        class="intro-hero"
+    >
+
+
+        <div class="intro-index">
+
+            <span>
+                00
+            </span>
+
+            <div></div>
+
+            <small>
+                BEFORE EVERYTHING
+            </small>
+
+        </div>
+
+
+        <p class="intro-eyebrow">
+            FOUR FRIENDS • ONE JOURNEY
+        </p>
+
+
+        <h1>
+
+            EVERY STORY
+
+            <span>
+                STARTS SOMEWHERE.
+            </span>
+
+        </h1>
+
+
+        <p class="intro-description">
+
+            No followers.
+            No strangers.
+            No noise.
+
+            Just four people,
+            one train,
+            and a place made only for us.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- PASSENGER HUD -->
+
+    <div
+        id="passengerHUD"
+        class="passenger-hud"
+    >
+
+
+        <div class="passenger-card passenger-shyam">
+
+            <span>01</span>
+
+            <strong>
+                SHYAM
+            </strong>
+
+            <small>
+                ON BOARD
+            </small>
+
+        </div>
+
+
+        <div class="passenger-card passenger-ravi">
+
+            <span>02</span>
+
+            <strong>
+                RAVI
+            </strong>
+
+            <small>
+                ON BOARD
+            </small>
+
+        </div>
+
+
+        <div class="passenger-card passenger-prashant">
+
+            <span>03</span>
+
+            <strong>
+                PRASHANT
+            </strong>
+
+            <small>
+                ON BOARD
+            </small>
+
+        </div>
+
+
+        <div class="passenger-card passenger-nuks">
+
+            <span>04</span>
+
+            <strong>
+                NUKS
+            </strong>
+
+            <small>
+                ON BOARD
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- START JOURNEY -->
+
+    <div
+        id="introStartArea"
+        class="intro-start-area"
+    >
+
+
+        <div class="start-line">
+
+            <span>
+                PRSN / 2026
+            </span>
+
+            <div></div>
+
+            <span>
+                DESTINATION UNKNOWN
+            </span>
+
+        </div>
+
+
+
+        <button
+            id="startJourneyBtn"
+            class="journey-button"
+            type="button"
+        >
+
+
+            <div class="journey-button-ring">
+
+                <div class="journey-button-core">
+
+                    <span>
+                        START
+                    </span>
+
+                    <small>
+                        JOURNEY
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="journey-button-copy">
+
+                <span>
+                    BEGIN THE EXPERIENCE
+                </span>
+
+                <strong>
+                    ↗
+                </strong>
+
+            </div>
+
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- JOURNEY STATUS -->
+
+    <div
+        id="journeyStatus"
+        class="journey-status"
+    >
+
+
+        <div class="journey-status-line">
+
+            <span>
+                CAMERA
+            </span>
+
+            <strong id="cameraStatus">
+                PLATFORM
+            </strong>
+
+        </div>
+
+
+        <div class="journey-status-line">
+
+            <span>
+                TRAIN
+            </span>
+
+            <strong id="trainStatus">
+                STATIONARY
+            </strong>
+
+        </div>
+
+
+        <div class="journey-status-line">
+
+            <span>
+                ALTITUDE
+            </span>
+
+            <strong id="altitudeStatus">
+                0 M
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- PROGRESS -->
+
+    <div
+        id="journeyProgress"
+        class="journey-progress"
+    >
+
+
+        <div class="journey-progress-track">
 
             <div
-                id="nameError"
-                class="error"
+                id="journeyProgressBar"
+                class="journey-progress-bar"
             ></div>
 
         </div>
 
-    </section>
+
+        <div class="journey-progress-labels">
+
+            <span>
+                STATION
+            </span>
+
+            <span>
+                DRONE
+            </span>
+
+            <span>
+                JOURNEY
+            </span>
+
+            <span>
+                PRSN
+            </span>
+
+        </div>
 
 
-    <!-- ========================================= -->
-    <!-- DASHBOARD -->
-    <!-- ========================================= -->
+    </div>
 
-    <section
-        id="dashboard"
-        class="screen"
+
+
+    <!-- SKIP -->
+
+    <button
+        id="skipIntroBtn"
+        class="skip-intro"
+        type="button"
     >
 
-        <header class="topbar">
+        SKIP INTRO
 
-            <div class="topbar-logo">
-                PRSN
+        <span>
+            →
+        </span>
+
+    </button>
+
+
+
+    <!-- CLOUD TRANSITION -->
+
+    <div
+        id="cloudTransition"
+        class="cloud-transition"
+    >
+
+        <div class="cloud cloud-a"></div>
+        <div class="cloud cloud-b"></div>
+        <div class="cloud cloud-c"></div>
+        <div class="cloud cloud-d"></div>
+        <div class="cloud cloud-e"></div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     IDENTITY / NAME SCREEN
+========================================================= -->
+
+<section
+    id="nameScreen"
+    class="screen identity-screen"
+>
+
+
+    <div class="identity-world">
+
+        <div class="sky-orb sky-orb-one"></div>
+
+        <div class="sky-orb sky-orb-two"></div>
+
+        <div class="floating-cloud floating-cloud-one"></div>
+
+        <div class="floating-cloud floating-cloud-two"></div>
+
+        <div class="identity-stars"></div>
+
+        <div class="identity-grid"></div>
+
+    </div>
+
+
+
+    <!-- HEADER -->
+
+    <header class="identity-header">
+
+
+        <div class="identity-logo">
+
+            <span>
+                P
+            </span>
+
+
+            <div>
+
+                <strong>
+                    PRSN
+                </strong>
+
+                <small>
+                    PRIVATE NETWORK
+                </small>
+
             </div>
 
-            <div class="topbar-right">
+        </div>
 
-                <span id="currentUser">
-                    —
+
+
+        <div class="identity-header-status">
+
+            <span class="status-dot"></span>
+
+            JOURNEY COMPLETE
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <main class="identity-layout">
+
+
+        <!-- COPY -->
+
+        <section class="identity-copy">
+
+
+            <div class="identity-number">
+
+                <span>
+                    01
                 </span>
 
-                <button
-                    id="musicBtn"
-                    class="music-btn"
-                    title="Music"
-                >
-                    ♫
-                </button>
+                <div></div>
+
+                <small>
+                    DESTINATION
+                </small>
 
             </div>
 
-        </header>
+
+            <p class="identity-eyebrow">
+                YOU HAVE ARRIVED
+            </p>
 
 
-        <main class="dashboard-content">
+            <h1>
 
-            <div class="welcome-section">
+                WELCOME
 
-                <div class="small-label">
-                    PRIVATE COMMUNITY
+                <span>
+                    TO PRSN.
+                </span>
+
+            </h1>
+
+
+            <p class="identity-description">
+
+                The train stops here.
+
+                Everything after this
+                belongs only to us.
+
+            </p>
+
+
+
+            <div class="identity-route">
+
+
+                <div class="route-point active">
+
+                    <span></span>
+
+                    <small>
+                        START
+                    </small>
+
                 </div>
 
-                <h1>
-                    Welcome,
-                    <span id="welcomeUser">
-                        —
+
+                <div class="route-line active"></div>
+
+
+                <div class="route-point active">
+
+                    <span></span>
+
+                    <small>
+                        JOURNEY
+                    </small>
+
+                </div>
+
+
+                <div class="route-line active"></div>
+
+
+                <div class="route-point current">
+
+                    <span></span>
+
+                    <small>
+                        PRSN
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- LOGIN TERMINAL -->
+
+        <section class="identity-terminal-wrap">
+
+
+            <div
+                class="identity-terminal"
+                data-tilt
+            >
+
+
+                <div class="terminal-light"></div>
+
+
+                <div class="terminal-header">
+
+                    <span>
+                        MEMBER TERMINAL
                     </span>
+
+                    <span>
+                        01 / 04
+                    </span>
+
+                </div>
+
+
+
+                <div class="terminal-symbol">
+
+
+                    <div class="terminal-ring ring-outer">
+
+
+                        <div class="terminal-ring ring-inner">
+
+
+                            <div class="terminal-core">
+
+                                P
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="terminal-copy">
+
+
+                    <span>
+                        IDENTIFICATION
+                    </span>
+
+
+                    <h2>
+                        Who are you?
+                    </h2>
+
+
+                    <p>
+                        OG Team members only.
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="terminal-input">
+
+
+                    <span>
+                        ID
+                    </span>
+
+
+                    <input
+                        id="nameInput"
+                        type="text"
+                        placeholder="ENTER YOUR NAME"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+
+                </div>
+
+
+
+                <button
+                    id="enterBtn"
+                    class="terminal-button"
+                    type="button"
+                >
+
+
+                    <span>
+                        ENTER PRSN
+                    </span>
+
+
+                    <strong>
+                        ↗
+                    </strong>
+
+
+                </button>
+
+
+
+                <div
+                    id="nameError"
+                    class="error-message"
+                ></div>
+
+
+
+                <div class="terminal-footer">
+
+                    <span>
+                        AUTHORIZED USERS ONLY
+                    </span>
+
+                    <i></i>
+
+                    <span>
+                        PRIVATE SESSION
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     ADMIN LOGIN
+     OPEN WHEN NAME === ADMIN
+========================================================= -->
+
+<section
+    id="adminLoginScreen"
+    class="screen admin-login-screen"
+>
+
+
+    <div class="admin-login-world">
+
+        <div class="admin-grid"></div>
+
+        <div class="admin-orb admin-orb-one"></div>
+
+        <div class="admin-orb admin-orb-two"></div>
+
+    </div>
+
+
+
+    <header class="admin-login-header">
+
+
+        <button
+            id="adminBackBtn"
+            class="back-button"
+            type="button"
+        >
+            ←
+        </button>
+
+
+        <div>
+
+            <span>
+                PRSN
+            </span>
+
+            <strong>
+                ADMINISTRATION
+            </strong>
+
+        </div>
+
+
+    </header>
+
+
+
+    <main class="admin-login-layout">
+
+
+        <section class="admin-login-copy">
+
+
+            <span>
+                CONTROL LEVEL / 01
+            </span>
+
+
+            <h1>
+
+                ADMIN
+
+                <em>
+                    ACCESS.
+                </em>
+
+            </h1>
+
+
+            <p>
+
+                Member activity,
+                private system history,
+                archived deletions
+                and network controls.
+
+            </p>
+
+
+        </section>
+
+
+
+        <section
+            class="admin-login-card"
+            data-tilt
+        >
+
+
+            <div class="admin-card-line"></div>
+
+
+            <div class="admin-login-label">
+
+                RESTRICTED AREA
+
+            </div>
+
+
+            <div class="admin-lock">
+
+                ◈
+
+            </div>
+
+
+            <h2>
+                Verify administrator.
+            </h2>
+
+
+            <p>
+                Enter administrator credentials.
+            </p>
+
+
+
+            <div class="admin-input">
+
+                <span>
+                    ID
+                </span>
+
+                <input
+                    id="adminUsername"
+                    type="text"
+                    placeholder="ADMIN USERNAME"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+
+            <div class="admin-input">
+
+                <span>
+                    KEY
+                </span>
+
+                <input
+                    id="adminPassword"
+                    type="password"
+                    placeholder="ADMIN PASSWORD"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+
+            <button
+                id="adminLoginBtn"
+                class="admin-login-button"
+                type="button"
+            >
+
+                <span>
+                    ENTER CONTROL CENTER
+                </span>
+
+                <strong>
+                    ↗
+                </strong>
+
+            </button>
+
+
+
+            <div
+                id="adminLoginError"
+                class="error-message"
+            ></div>
+
+
+        </section>
+
+
+    </main>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     ADMIN CONTROL CENTER
+========================================================= -->
+
+<section
+    id="adminPanel"
+    class="screen admin-panel-screen"
+>
+
+
+    <!-- ADMIN TOPBAR -->
+
+    <header class="admin-topbar">
+
+
+        <div class="admin-brand">
+
+
+            <span class="admin-brand-mark">
+                P
+            </span>
+
+
+            <div>
+
+                <strong>
+                    PRSN
+                </strong>
+
+                <small>
+                    CONTROL CENTER
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="admin-topbar-center">
+
+            ADMINISTRATION
+
+        </div>
+
+
+
+        <div class="admin-topbar-actions">
+
+
+            <button
+                id="adminRefreshBtn"
+                class="admin-toolbar-button"
+                type="button"
+            >
+
+                ↻ REFRESH
+
+            </button>
+
+
+            <button
+                id="adminLogoutBtn"
+                class="admin-toolbar-button danger"
+                type="button"
+            >
+
+                LOGOUT
+
+            </button>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ADMIN MAIN -->
+
+    <main class="admin-dashboard">
+
+
+        <!-- HERO -->
+
+        <section
+            class="admin-hero reveal-section"
+            data-reveal="left"
+        >
+
+
+            <div>
+
+
+                <span>
+                    PRIVATE SYSTEM
+                </span>
+
+
+                <h1>
+
+                    CONTROL
+
+                    <em>
+                        CENTER.
+                    </em>
+
                 </h1>
 
+
                 <p>
-                    This is our little corner of the internet.
+
+                    Member activity,
+                    session history,
+                    message archive
+                    and media overview.
+
+                </p>
+
+
+            </div>
+
+
+            <div class="admin-system-state">
+
+                <span class="status-dot"></span>
+
+                SYSTEM ONLINE
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- STATS -->
+
+        <section class="admin-stats">
+
+
+            <article
+                class="admin-stat-card reveal-section"
+                data-reveal="left"
+            >
+
+                <span>
+                    MEMBERS
+                </span>
+
+                <strong id="memberCount">
+                    0
+                </strong>
+
+                <small>
+                    REGISTERED OG MEMBERS
+                </small>
+
+            </article>
+
+
+
+            <article
+                class="admin-stat-card reveal-section"
+                data-reveal="up"
+            >
+
+                <span>
+                    ONLINE
+                </span>
+
+                <strong id="onlineCount">
+                    0
+                </strong>
+
+                <small>
+                    RECENTLY ACTIVE
+                </small>
+
+            </article>
+
+
+
+            <article
+                class="admin-stat-card reveal-section"
+                data-reveal="up"
+            >
+
+                <span>
+                    ACTIVITY
+                </span>
+
+                <strong id="activityCount">
+                    0
+                </strong>
+
+                <small>
+                    RECORDED EVENTS
+                </small>
+
+            </article>
+
+
+
+            <article
+                class="admin-stat-card reveal-section"
+                data-reveal="right"
+            >
+
+                <span>
+                    DELETED
+                </span>
+
+                <strong id="deletedCount">
+                    0
+                </strong>
+
+                <small>
+                    ARCHIVED MESSAGES
+                </small>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- ADMIN NAVIGATION -->
+
+        <nav class="admin-tabs">
+
+
+            <button
+                class="admin-tab active"
+                type="button"
+                data-admin-tab="members"
+            >
+                MEMBERS
+            </button>
+
+
+            <button
+                class="admin-tab"
+                type="button"
+                data-admin-tab="activity"
+            >
+                ACTIVITY
+            </button>
+
+
+            <button
+                class="admin-tab"
+                type="button"
+                data-admin-tab="deleted"
+            >
+                DELETED MESSAGES
+            </button>
+
+
+            <button
+                class="admin-tab"
+                type="button"
+                data-admin-tab="media"
+            >
+                MEDIA
+            </button>
+
+
+        </nav>
+
+
+
+        <!-- =================================================
+             MEMBERS TAB
+        ================================================== -->
+
+        <section
+            id="adminMembersSection"
+            class="admin-section active"
+            data-admin-section="members"
+        >
+
+
+            <div class="admin-section-heading">
+
+
+                <div>
+
+                    <span>
+                        COMMUNITY
+                    </span>
+
+                    <h2>
+                        Member activity
+                    </h2>
+
+                </div>
+
+
+                <span>
+                    ONLINE / LAST SEEN
+                </span>
+
+
+            </div>
+
+
+
+            <div
+                id="adminMembersList"
+                class="admin-members-grid"
+            ></div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACTIVITY TAB
+        ================================================== -->
+
+        <section
+            id="adminActivitySection"
+            class="admin-section"
+            data-admin-section="activity"
+        >
+
+
+            <div class="admin-section-heading">
+
+
+                <div>
+
+                    <span>
+                        TIMELINE
+                    </span>
+
+                    <h2>
+                        Activity history
+                    </h2>
+
+                </div>
+
+
+                <span>
+                    PRSN EVENTS ONLY
+                </span>
+
+
+            </div>
+
+
+
+            <div class="admin-filters">
+
+
+                <select
+                    id="activityUserFilter"
+                    class="admin-select"
+                >
+
+                    <option value="ALL">
+                        ALL MEMBERS
+                    </option>
+
+                    <option value="SHYAM">
+                        SHYAM
+                    </option>
+
+                    <option value="RAVI">
+                        RAVI
+                    </option>
+
+                    <option value="PRASHANT">
+                        PRASHANT
+                    </option>
+
+                    <option value="NUKS">
+                        NUKS
+                    </option>
+
+                </select>
+
+
+
+                <select
+                    id="activityTypeFilter"
+                    class="admin-select"
+                >
+
+                    <option value="ALL">
+                        ALL ACTIVITIES
+                    </option>
+
+                    <option value="LOGIN">
+                        LOGIN
+                    </option>
+
+                    <option value="OPENED_CHAT">
+                        OPENED CHAT
+                    </option>
+
+                    <option value="OPENED_GALLERY">
+                        OPENED GALLERY
+                    </option>
+
+                    <option value="SENT_MESSAGE">
+                        SENT MESSAGE
+                    </option>
+
+                    <option value="SENT_PHOTO">
+                        SENT PHOTO
+                    </option>
+
+                    <option value="SENT_VOICE">
+                        SENT VOICE
+                    </option>
+
+                    <option value="DELETED_MESSAGE">
+                        DELETED MESSAGE
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+
+            <div
+                id="adminActivityList"
+                class="admin-activity-list"
+            ></div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DELETED MESSAGES TAB
+        ================================================== -->
+
+        <section
+            id="adminDeletedSection"
+            class="admin-section"
+            data-admin-section="deleted"
+        >
+
+
+            <div class="admin-section-heading">
+
+
+                <div>
+
+                    <span>
+                        ARCHIVE
+                    </span>
+
+                    <h2>
+                        Deleted messages
+                    </h2>
+
+                </div>
+
+
+                <span>
+                    ADMIN ARCHIVE
+                </span>
+
+
+            </div>
+
+
+
+            <div class="admin-warning-box">
+
+                <span>
+                    ◈
+                </span>
+
+                <p>
+
+                    Messages hidden from the normal chat
+                    may appear here if the archive system
+                    stores them before deletion.
+
                 </p>
 
             </div>
 
 
-            <!-- FEATURES -->
 
-            <div class="features-grid">
-
-
-                <!-- COMMUNITY CHAT -->
-
-                <button
-                    id="chatBtn"
-                    class="feature-card chat-main-card"
-                >
-
-                    <div class="feature-icon">
-                        💬
-                    </div>
-
-                    <div class="feature-title">
-                        Community Chat
-                    </div>
-
-                    <div class="feature-description">
-                        Enter the private PRSN chat and talk in realtime.
-                    </div>
-
-                    <div class="feature-arrow">
-                        →
-                    </div>
-
-                </button>
+            <div
+                id="adminDeletedList"
+                class="admin-deleted-list"
+            ></div>
 
 
-                <!-- AMAZING WALL -->
+        </section>
 
-                <button
-                    id="galleryBtn"
-                    class="feature-card gallery-main-card"
-                >
 
-                    <div class="feature-icon">
-                        📸
-                    </div>
 
-                    <div class="feature-title">
-                        Amazing Wall
-                    </div>
+        <!-- =================================================
+             MEDIA TAB
+        ================================================== -->
 
-                    <div class="feature-description">
-                        Got an amazing photo? Put it on the PRSN wall.
-                    </div>
+        <section
+            id="adminMediaSection"
+            class="admin-section"
+            data-admin-section="media"
+        >
 
-                    <div class="feature-arrow">
-                        →
-                    </div>
 
-                </button>
+            <div class="admin-section-heading">
+
+
+                <div>
+
+                    <span>
+                        MEDIA
+                    </span>
+
+                    <h2>
+                        Shared content
+                    </h2>
+
+                </div>
+
+
+                <span>
+                    PHOTOS / VOICES
+                </span>
 
 
             </div>
 
-        </main>
-
-    </section>
 
 
-    <!-- ========================================= -->
-    <!-- CHAT CODE MODAL -->
-    <!-- ========================================= -->
+            <div
+                id="adminMediaList"
+                class="admin-media-grid"
+            ></div>
 
-    <div
-        id="chatModal"
-        class="modal hidden"
-    >
 
-        <div class="modal-card">
+        </section>
+
+
+    </main>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     NORMAL USER DASHBOARD
+========================================================= -->
+
+<section
+    id="dashboard"
+    class="screen dashboard-screen"
+>
+
+
+    <header class="dashboard-header">
+
+
+        <div class="dashboard-brand">
+
+
+            <span class="dashboard-brand-mark">
+                P
+            </span>
+
+
+            <div>
+
+                <strong>
+                    PRSN
+                </strong>
+
+                <small>
+                    OG TEAM
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+
+        <nav class="dashboard-nav">
+
+            <span class="active">
+                HOME
+            </span>
+
+            <span>
+                PRIVATE SPACE
+            </span>
+
+        </nav>
+
+
+
+        <div class="dashboard-user-area">
+
+
+            <div class="current-user-chip">
+
+                <span class="status-dot"></span>
+
+                <span id="currentUser">
+                    —
+                </span>
+
+            </div>
+
 
             <button
-                id="closeChat"
-                class="modal-close"
+                id="musicBtn"
+                class="dashboard-icon-button"
+                type="button"
             >
-                ×
+                ♫
             </button>
 
-            <div class="modal-icon">
-                🔐
+
+        </div>
+
+
+    </header>
+
+
+
+    <main class="dashboard-content">
+
+
+        <!-- WELCOME -->
+
+        <section
+            class="dashboard-welcome reveal-section"
+            data-reveal="left"
+        >
+
+
+            <div class="dashboard-welcome-copy">
+
+
+                <span class="dashboard-eyebrow">
+                    PRIVATE SINCE 2026
+                </span>
+
+
+                <h1>
+
+                    GOOD TO SEE YOU,
+
+                    <em id="welcomeUser">
+                        —
+                    </em>
+
+                </h1>
+
+
+                <p>
+
+                    Same people.
+                    Same madness.
+                    One private place.
+
+                </p>
+
+
             </div>
 
+
+
+            <div class="dashboard-journey-mark">
+
+
+                <div class="journey-circle">
+
+                    <span>
+                        OG
+                    </span>
+
+                </div>
+
+
+                <p>
+                    THE JOURNEY CONTINUES
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- MEMORY STRIP -->
+
+        <section
+            class="memory-strip reveal-section"
+            data-reveal="right"
+        >
+
+
+            <div class="memory-strip-number">
+                04
+            </div>
+
+
+            <div class="memory-strip-text">
+
+                <small>
+                    PEOPLE
+                </small>
+
+                <h2>
+                    NO RANDOMS.
+                    JUST US.
+                </h2>
+
+            </div>
+
+
+            <div class="memory-strip-line"></div>
+
+
+            <div class="memory-strip-date">
+                2026
+            </div>
+
+
+        </section>
+
+
+
+        <!-- TITLE -->
+
+        <section
+            class="dashboard-section-title reveal-section"
+            data-reveal="left"
+        >
+
+
+            <div>
+
+                <span>
+                    CHOOSE YOUR SPACE
+                </span>
+
+                <h2>
+                    Where are we going?
+                </h2>
+
+            </div>
+
+
+            <span>
+                02 DESTINATIONS
+            </span>
+
+
+        </section>
+
+
+
+        <!-- DESTINATIONS -->
+
+        <section class="dashboard-destinations">
+
+
+            <!-- CHAT -->
+
+            <button
+                id="chatBtn"
+                class="destination-card destination-chat reveal-section"
+                data-reveal="left"
+                data-tilt
+                type="button"
+            >
+
+
+                <div class="destination-background"></div>
+
+
+                <span class="destination-index">
+                    01
+                </span>
+
+
+
+                <div class="destination-top">
+
+
+                    <div class="destination-icon">
+                        #
+                    </div>
+
+
+                    <div class="destination-live">
+
+                        <span></span>
+
+                        LIVE
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="destination-content">
+
+
+                    <small>
+                        REALTIME
+                    </small>
+
+
+                    <h3>
+
+                        COMMUNITY
+
+                        <em>
+                            CHAT
+                        </em>
+
+                    </h3>
+
+
+                    <p>
+
+                        Text.
+                        Photos.
+                        Voices.
+                        Complete nonsense.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="destination-bottom">
+
+                    <span>
+                        ENTER CHAT
+                    </span>
+
+                    <strong>
+                        ↗
+                    </strong>
+
+                </div>
+
+
+            </button>
+
+
+
+            <!-- WALL -->
+
+            <button
+                id="galleryBtn"
+                class="destination-card destination-memory reveal-section"
+                data-reveal="right"
+                data-tilt
+                type="button"
+            >
+
+
+                <div class="destination-background"></div>
+
+
+                <span class="destination-index">
+                    02
+                </span>
+
+
+
+                <div class="destination-top">
+
+
+                    <div class="destination-icon">
+                        ◫
+                    </div>
+
+
+                    <div class="destination-live">
+                        ARCHIVE
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="destination-content">
+
+
+                    <small>
+                        MEMORIES
+                    </small>
+
+
+                    <h3>
+
+                        AMAZING
+
+                        <em>
+                            WALL
+                        </em>
+
+                    </h3>
+
+
+                    <p>
+
+                        Photos that somehow
+                        survived the group chat.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="destination-bottom">
+
+                    <span>
+                        OPEN ARCHIVE
+                    </span>
+
+                    <strong>
+                        ↗
+                    </strong>
+
+                </div>
+
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- FRIENDS -->
+
+        <section
+            class="friends-section reveal-section"
+            data-reveal="up"
+        >
+
+
+            <div class="friends-heading">
+
+
+                <span>
+                    THE PASSENGERS
+                </span>
+
+
+                <h2>
+                    Same train.
+                    Different problems.
+                </h2>
+
+
+            </div>
+
+
+
+            <div class="friends-track">
+
+
+                <article class="friend-ticket">
+
+                    <span>
+                        01
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            SHYAM
+                        </strong>
+
+                        <small>
+                            OG MEMBER
+                        </small>
+
+                    </div>
+
+                    <i>
+                        →
+                    </i>
+
+                </article>
+
+
+
+                <article class="friend-ticket">
+
+                    <span>
+                        02
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            RAVI
+                        </strong>
+
+                        <small>
+                            OG MEMBER
+                        </small>
+
+                    </div>
+
+                    <i>
+                        →
+                    </i>
+
+                </article>
+
+
+
+                <article class="friend-ticket">
+
+                    <span>
+                        03
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            PRASHANT
+                        </strong>
+
+                        <small>
+                            OG MEMBER
+                        </small>
+
+                    </div>
+
+                    <i>
+                        →
+                    </i>
+
+                </article>
+
+
+
+                <article class="friend-ticket">
+
+                    <span>
+                        04
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            NUKS
+                        </strong>
+
+                        <small>
+                            OG MEMBER
+                        </small>
+
+                    </div>
+
+                    <i>
+                        →
+                    </i>
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ENDING -->
+
+        <section
+            class="dashboard-ending reveal-section"
+            data-reveal="up"
+        >
+
+
+            <span>
+                PRSN
+            </span>
+
+
             <h2>
-                PRIVATE CHAT
+
+                SOME JOURNEYS
+
+                <em>
+                    DON'T NEED A DESTINATION.
+                </em>
+
             </h2>
 
-            <p>
-                Enter the PRSN chat codeword.
-            </p>
+
+            <div class="dashboard-ending-line"></div>
+
+
+            <small>
+                SHYAM • RAVI • PRASHANT • NUKS
+            </small>
+
+
+        </section>
+
+
+    </main>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     CHAT CODE MODAL
+========================================================= -->
+
+<div
+    id="chatModal"
+    class="modal hidden"
+>
+
+
+    <div class="modal-orbit modal-orbit-one"></div>
+
+    <div class="modal-orbit modal-orbit-two"></div>
+
+
+
+    <div
+        class="chat-access-card"
+        data-tilt
+    >
+
+
+        <button
+            id="closeChat"
+            class="modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <div class="access-code">
+            ACCESS / 01
+        </div>
+
+
+        <div class="access-symbol">
+            ◈
+        </div>
+
+
+        <span class="access-eyebrow">
+            PRIVATE ENTRY
+        </span>
+
+
+        <h2>
+            One last stop.
+        </h2>
+
+
+        <p>
+            Enter the OG Team codeword.
+        </p>
+
+
+
+        <div class="access-input">
+
+
+            <span>
+                //
+            </span>
+
 
             <input
-                type="password"
                 id="chatCode"
-                placeholder="Codeword"
+                type="password"
+                placeholder="CODEWORD"
                 autocomplete="off"
             >
 
-            <button
-                id="unlockChat"
-                class="primary-btn"
-            >
-                UNLOCK CHAT
-            </button>
-
-            <div
-                id="chatError"
-                class="error"
-            ></div>
 
         </div>
+
+
+
+        <button
+            id="unlockChat"
+            class="access-button"
+            type="button"
+        >
+
+            <span>
+                OPEN CHAT
+            </span>
+
+            <strong>
+                →
+            </strong>
+
+        </button>
+
+
+
+        <div
+            id="chatError"
+            class="error-message"
+        ></div>
+
 
     </div>
 
 
-    <!-- ========================================= -->
-    <!-- AMAZING WALL -->
-    <!-- ========================================= -->
-
-    <section
-        id="galleryScreen"
-        class="full-panel hidden"
-    >
-
-        <div class="panel-header">
-
-            <button
-                id="backFromGallery"
-                class="back-btn"
-            >
-                ←
-            </button>
-
-            <div>
-
-                <div class="panel-title">
-                    AMAZING WALL
-                </div>
-
-                <div class="panel-subtitle">
-                    PRSN • OUR BEST MOMENTS
-                </div>
-
-            </div>
-
-        </div>
+</div>
 
 
-        <div class="gallery-toolbar">
 
-            <label
-                for="galleryInput"
-                class="gallery-upload-btn"
-            >
-                📸 UPLOAD PHOTO
-            </label>
+<!-- =========================================================
+     CHAT
+========================================================= -->
 
-            <input
-                type="file"
-                id="galleryInput"
-                accept="image/*"
-                hidden
-            >
-
-        </div>
+<section
+    id="chatScreen"
+    class="full-panel hidden"
+>
 
 
-        <div
-            id="galleryGrid"
-            class="gallery-grid"
-        ></div>
-
-    </section>
+    <header class="panel-header">
 
 
-    <!-- ========================================= -->
-    <!-- COMMUNITY CHAT -->
-    <!-- ========================================= -->
+        <div class="panel-header-left">
 
-    <section
-        id="chatScreen"
-        class="full-panel hidden"
-    >
-
-        <div class="panel-header">
 
             <button
                 id="backFromChat"
-                class="back-btn"
+                class="back-button"
+                type="button"
             >
                 ←
             </button>
 
-            <div>
 
-                <div class="panel-title">
+
+            <div class="panel-title-group">
+
+                <span>
+                    PRSN / LIVE
+                </span>
+
+                <h2>
                     COMMUNITY CHAT
-                </div>
-
-                <div class="panel-subtitle">
-                    PRSN • REALTIME
-                </div>
+                </h2>
 
             </div>
 
+
         </div>
 
 
-        <!-- MESSAGES -->
 
-        <div
-            id="messages"
-            class="messages"
-        ></div>
+        <div class="live-status">
 
+            <span></span>
 
-        <!-- VOICE RECORD STATUS -->
+            REALTIME
 
-        <div
-            id="voiceStatus"
-            class="voice-status hidden"
-        >
-            <span class="record-dot"></span>
-
-            <span id="voiceStatusText">
-                Recording...
-            </span>
-
-            <span id="voiceTimer">
-                0:00
-            </span>
-
-            <span class="voice-cancel-text">
-                Release to send
-            </span>
         </div>
 
 
-        <!-- CHAT INPUT -->
+    </header>
 
-        <div class="chat-input-area">
 
-            <!-- PHOTO -->
+
+    <div class="chat-layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="chat-sidebar">
+
+
+            <span class="sidebar-label">
+                ROOM
+            </span>
+
+
+            <div class="room-card active">
+
+
+                <span>
+                    #
+                </span>
+
+
+                <div>
+
+                    <strong>
+                        community
+                    </strong>
+
+                    <small>
+                        OG Team
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="sidebar-spacer"></div>
+
+
+            <div class="sidebar-private">
+
+
+                <span>
+                    ◈
+                </span>
+
+
+                <div>
+
+                    <small>
+                        SESSION
+                    </small>
+
+                    <strong>
+                        PRIVATE
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </aside>
+
+
+
+        <!-- MAIN CHAT -->
+
+        <main class="chat-main">
+
+
+            <div class="chat-intro">
+
+
+                <span>
+                    # COMMUNITY
+                </span>
+
+
+                <h3>
+                    The nonsense lives here.
+                </h3>
+
+
+                <p>
+                    Say something before someone else does.
+                </p>
+
+
+            </div>
+
+
+
+            <div
+                id="messages"
+                class="messages"
+            ></div>
+
+
+
+            <!-- VOICE STATUS -->
+
+            <div
+                id="voiceStatus"
+                class="voice-status hidden"
+            >
+
+
+                <div class="record-bars">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+
+                <span id="voiceStatusText">
+                    Recording...
+                </span>
+
+
+                <strong id="voiceTimer">
+                    0:00
+                </strong>
+
+
+                <small class="voice-cancel-text">
+                    RELEASE TO SEND
+                </small>
+
+
+            </div>
+
+
+
+            <!-- COMPOSER -->
+
+            <div class="chat-composer">
+
+
+                <div class="composer-shell">
+
+
+                    <label
+                        for="photoInput"
+                        class="composer-button"
+                    >
+                        +
+                    </label>
+
+
+                    <input
+                        id="photoInput"
+                        type="file"
+                        accept="image/*"
+                        hidden
+                    >
+
+
+
+                    <input
+                        id="messageInput"
+                        type="text"
+                        placeholder="Write something..."
+                        autocomplete="off"
+                    >
+
+
+
+                    <button
+                        id="voiceRecordBtn"
+                        class="composer-button voice-record-btn"
+                        type="button"
+                    >
+                        ◉
+                    </button>
+
+
+
+                    <button
+                        id="sendMessage"
+                        class="send-message-button"
+                        type="button"
+                    >
+
+                        SEND
+
+                        <span>
+                            ↗
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     AMAZING WALL
+========================================================= -->
+
+<section
+    id="galleryScreen"
+    class="full-panel hidden"
+>
+
+
+    <header class="panel-header">
+
+
+        <div class="panel-header-left">
+
+
+            <button
+                id="backFromGallery"
+                class="back-button"
+                type="button"
+            >
+                ←
+            </button>
+
+
+
+            <div class="panel-title-group">
+
+                <span>
+                    PRSN / ARCHIVE
+                </span>
+
+                <h2>
+                    AMAZING WALL
+                </h2>
+
+            </div>
+
+
+        </div>
+
+
+
+        <span class="gallery-index">
+            02
+        </span>
+
+
+    </header>
+
+
+
+    <!-- HERO -->
+
+    <section class="gallery-hero">
+
+
+        <div>
+
+
+            <span>
+                OUR VISUAL ARCHIVE
+            </span>
+
+
+            <h1>
+
+                STUFF WORTH
+
+                <em>
+                    REMEMBERING.
+                </em>
+
+            </h1>
+
+
+        </div>
+
+
+
+        <div class="gallery-hero-action">
+
+
+            <p>
+
+                Every bad photo eventually
+                becomes a good memory.
+
+            </p>
+
+
 
             <label
-                for="photoInput"
-                class="photo-btn"
-                title="Send photo"
+                for="galleryInput"
+                class="gallery-upload-button"
             >
-                📷
+
+                + ADD MEMORY
+
+                <span>
+                    ↗
+                </span>
+
             </label>
 
+
             <input
-                id="photoInput"
+                id="galleryInput"
                 type="file"
                 accept="image/*"
                 hidden
             >
 
 
-            <!-- TEXT -->
-
-            <input
-                type="text"
-                id="messageInput"
-                placeholder="Type a message..."
-                autocomplete="off"
-            >
-
-
-            <!-- VOICE -->
-
-            <button
-                id="voiceRecordBtn"
-                class="voice-record-btn"
-                type="button"
-                title="Hold to record"
-            >
-                🎙️
-            </button>
-
-
-            <!-- SEND -->
-
-            <button
-                id="sendMessage"
-                type="button"
-            >
-                SEND
-            </button>
-
         </div>
+
 
     </section>
 
 
-    <!-- ========================================= -->
-    <!-- SUPABASE -->
-    <!-- ========================================= -->
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+    <div class="gallery-meta">
 
-    <script src="script.js"></script>
+        <span>
+            PRSN ARCHIVE
+        </span>
+
+        <i></i>
+
+        <span>
+            FOUR PEOPLE
+        </span>
+
+        <i></i>
+
+        <span>
+            TOO MANY PHOTOS
+        </span>
+
+    </div>
+
+
+
+    <div
+        id="galleryGrid"
+        class="gallery-grid"
+    ></div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     MUSIC
+========================================================= -->
+
+<audio
+    id="bgMusic"
+    loop
+    preload="metadata"
+>
+
+    <source
+        src="song.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<audio
+    id="chatMusic"
+    loop
+    preload="metadata"
+>
+
+    <source
+        src="song3.mp3.mp3"
+        type="audio/mpeg"
+    >
+
+    <source
+        src="song2.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<!-- =========================================================
+     SUPABASE CONFIG
+========================================================= -->
+
+<script>
+
+window.PRSN_CONFIG = {
+
+    SUPABASE_URL:
+        "https://xvvtzhqyihwgjdzdqkvx.supabase.co",
+
+    SUPABASE_PUBLISHABLE_KEY:
+        "sb_publishable_Gp8pbf7ciC-QHUhMg6lyzA_WT6UaKoB"
+
+};
+
+</script>
+
+
+
+<!-- SUPABASE -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+
+<!-- GSAP -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"
+></script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"
+></script>
+
+
+
+<!-- MAIN JS -->
+
+<script
+    type="module"
+    src="script.js"
+></script>
+
 
 </body>
 
